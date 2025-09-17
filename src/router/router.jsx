@@ -3,6 +3,8 @@ import Main from "../layout/Main";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
 import UserManagement from "../pages/UserManagement/UserManagement";
 import AllOwner from "../pages/AllOwner/AllOwner";
+import AllProvider from "../pages/AllProviders/AllProviders";
+import Request from "../pages/Request/Request";
 
 
 
@@ -45,6 +47,14 @@ const router = createBrowserRouter([
       {
         path: "/allOwner",
         element: <AllOwner/>,
+      },
+      {
+        path: "/allProviders",
+        element: <AllProvider/>,
+      },
+      {
+        path: "/requestOverview",
+        element: <Request/>,
       },
      
     ],
