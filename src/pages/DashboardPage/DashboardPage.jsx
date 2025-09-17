@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 
 
 import Stats from "../../component/DashboardPage/Stats";
+import Graph from "../../component/DashboardPage/Graph";
+import RecentJoin from "../../component/DashboardPage/RecentJoin";
 
 function DashboardPage() {
   const currentYear = dayjs().year();
@@ -25,15 +27,12 @@ function DashboardPage() {
   return (
     <div className=" container mx-auto font-title mb-5">
     
-      <div className="flex flex-col justify-between items-center pt-0 mt-0 mb-1"></div>
+
       {/* main content */}
       <Stats />
-      {/* <PracticeSession /> */}
-      <div className="flex gap-10 w-[100%]">
-        {/* <RecentActivity /> */}
-
-        {/* <Question /> */}
-      </div>
+  <Graph/>
+  <RecentJoin/>
+ 
     </div>
   );
 }
