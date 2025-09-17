@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layout/Main";
 import DashboardPage from "../pages/DashboardPage/DashboardPage";
+import UserManagement from "../pages/UserManagement/UserManagement";
+import AllOwner from "../pages/AllOwner/AllOwner";
 
 
 
@@ -36,10 +38,14 @@ const router = createBrowserRouter([
         path: "/",
         element: <DashboardPage/>,
       },
-    //   {
-    //     path: "/userManagement",
-    //     element: <UserManagement />,
-    //   },
+      {
+        path: "/userManagement",
+        element: <UserManagement />,
+      },
+      {
+        path: "/allOwner",
+        element: <AllOwner/>,
+      },
      
     ],
   },
