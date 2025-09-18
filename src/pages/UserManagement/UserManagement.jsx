@@ -1,13 +1,12 @@
-import { useState } from "react"
-import { Table, Button, Input, Avatar, Tag, Modal, Pagination } from "antd"
-import { Search, Expand } from "lucide-react"
-import user1 from '../../assets/user1.jpg';
-import user2 from '../../assets/user2.jpg';
-import user3 from '../../assets/user3.jpg';
-import idCard from '../../assets/idcard.jpg'
+import { useState } from "react";
+import { Table, Button, Input, Avatar, Tag, Modal, Pagination } from "antd";
+import { Search, Expand } from "lucide-react";
+import user1 from "../../assets/user1.jpg";
+import user2 from "../../assets/user2.jpg";
+import user3 from "../../assets/user3.jpg";
+import idCard from "../../assets/idcard.jpg";
 
 const userData = [
-  // Your user data here
   {
     id: 1,
     name: "Jacob",
@@ -107,7 +106,7 @@ const userData = [
 ];
 
 export default function UserManagement() {
-      const [users, setUsers] = useState(userData);
+  const [users, setUsers] = useState(userData);
   const [activeTab, setActiveTab] = useState("Owner"); // Default is Owner
   const [searchText, setSearchText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -115,7 +114,11 @@ export default function UserManagement() {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10; // Adjust this based on how many rows you want per page
   const handleStatusChange = (userId, newStatus) => {
-    setUsers(users.map((user) => (user.id === userId ? { ...user, status: newStatus } : user)));
+    setUsers(
+      users.map((user) =>
+        user.id === userId ? { ...user, status: newStatus } : user
+      )
+    );
   };
 
   const filteredUsers = userData.filter((user) => {
@@ -133,7 +136,6 @@ export default function UserManagement() {
   );
 
   const columns = [
-
     {
       title: "Name",
       dataIndex: "name",
@@ -175,7 +177,7 @@ export default function UserManagement() {
       key: "address",
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
-       {
+    {
       title: "Status",
       dataIndex: "status",
       key: "status",
@@ -184,7 +186,9 @@ export default function UserManagement() {
           value={text}
           onChange={(e) => handleStatusChange(record.id, e.target.value)}
           className={`px-3 py-1 rounded text-sm font-medium border-none outline-none cursor-pointer ${
-            text === "Accept" ? "bg-orange-500 text-white" : "bg-red-500 text-white"
+            text === "Accept"
+              ? "bg-orange-500 text-white"
+              : "bg-red-500 text-white"
           }`}
         >
           <option value="Accept">Accept</option>
@@ -222,17 +226,21 @@ export default function UserManagement() {
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
+      <div className="">
         <div className="bg-white rounded-lg shadow-sm">
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
-                <h1 className="text-2xl font-semibold text-gray-900">User Management</h1>
+                <h1 className="text-2xl font-semibold text-gray-900">
+                  User Management
+                </h1>
                 <div className="flex bg-gray-100 rounded-lg p-1">
                   <button
                     onClick={() => setActiveTab("Owner")}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === "Owner" ? "bg-slate-800 text-white" : "text-gray-600 hover:text-gray-900"
+                      activeTab === "Owner"
+                        ? "bg-slate-800 text-white"
+                        : "text-gray-600 hover:text-gray-900"
                     }`}
                   >
                     Owner
@@ -240,7 +248,9 @@ export default function UserManagement() {
                   <button
                     onClick={() => setActiveTab("Service Provider")}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === "Service Provider" ? "bg-slate-800 text-white" : "text-gray-600 hover:text-gray-900"
+                      activeTab === "Service Provider"
+                        ? "bg-slate-800 text-white"
+                        : "text-gray-600 hover:text-gray-900"
                     }`}
                   >
                     Provider
@@ -264,20 +274,22 @@ export default function UserManagement() {
             dataSource={paginatedUsers}
             pagination={false}
             className="custom-table text-center"
-            rowClassName={(record, index) => (index % 2 === 0 ? "bg-white" : "bg-gray-50")}
+            rowClassName={(record, index) =>
+              index % 2 === 0 ? "bg-white" : "bg-gray-50"
+            }
           />
 
-<div className="flex justify-center items-center">
-              {/* Pagination */}
-          <Pagination
-            current={currentPage}
-            total={filteredUsers.length}
-            pageSize={pageSize}
-            onChange={handlePageChange}
-            showSizeChanger={false}
-            className="my-4 text-center"
-          />
-</div>
+          <div className="flex justify-center items-center">
+            {/* Pagination */}
+            <Pagination
+              current={currentPage}
+              total={filteredUsers.length}
+              pageSize={pageSize}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+              className="my-4 text-center"
+            />
+          </div>
         </div>
       </div>
 
@@ -308,16 +320,22 @@ export default function UserManagement() {
                   if (key === "idCard") return null; // Skip rendering the ID card image
                   return (
                     <div key={key}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{key.replace(/([A-Z])/g, ' $1')}</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        {key.replace(/([A-Z])/g, " $1")}
+                      </label>
                       <div className="text-gray-900">
-                        {typeof selectedUser[key] === "string" ? selectedUser[key] : JSON.stringify(selectedUser[key])}
+                        {typeof selectedUser[key] === "string"
+                          ? selectedUser[key]
+                          : JSON.stringify(selectedUser[key])}
                       </div>
                     </div>
                   );
                 })}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Id Card
+                  </label>
                   <img
                     src={selectedUser.idCard}
                     alt="ID Card"

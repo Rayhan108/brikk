@@ -62,7 +62,7 @@ const Request = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [blockModalVisible, setBlockModalVisible] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
@@ -73,28 +73,14 @@ const Request = () => {
     setModalVisible(true);
   };
 
-  const handleBlockClick = (user) => {
-    setSelectedUser(user);
-    setBlockModalVisible(true);
-  };
+
 
   const handleCloseModal = () => {
     setModalVisible(false);
     setSelectedUser(null);
   };
 
-  const handleBlockCloseModal = () => {
-    setBlockModalVisible(false);
-    setSelectedUser(null);
-  };
 
-  const handleBlockUser = () => {
-    const updatedUsers = users.map((u) =>
-      u.id === selectedUser.id ? { ...u, status: "Blocked" } : u
-    );
-    setUsers(updatedUsers);
-    setBlockModalVisible(false);
-  };
 
   const paginatedUsers = users.slice(
     (currentPage - 1) * pageSize,
@@ -180,11 +166,7 @@ const Request = () => {
             icon={<Expand className="w-4 h-4" />}
             onClick={() => handleOverviewClick(record)}
           />
-          <Button
-            type="text"
-            icon={<UserX className="w-4 h-4 text-red-600" />}
-            onClick={() => handleBlockClick(record)}
-          />
+     
         </div>
       ),
     },
@@ -228,82 +210,90 @@ const Request = () => {
         />
       </div>
 
-      {/* Overview Modal */}
-      <Modal
-        title="User Overview"
-        open={modalVisible}
-        onCancel={handleCloseModal}
-        footer={[
-          <Button key="back" onClick={handleCloseModal}>
-            Close
-          </Button>,
-        ]}
-      >
-        {selectedUser && (
-          <div className="pb-6">
-            <div className="flex justify-center py-5 shadow-2xl">
-              <img
-                src={selectedUser.owner.avatar}
-                alt={selectedUser.owner.name}
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            </div>
-            <div className="bg-gray-100 w-full">
-              <div className="space-y-4 px-5 py-5">
-                <div>
-                  <label className="block font-medium">Owner</label>
-                  <p>{selectedUser.owner.name}</p>
-                </div>
-                <div>
-                  <label className="block font-medium">Provider</label>
-                  <p>{selectedUser.provider.name}</p>
-                </div>
-                <div>
-                  <label className="block font-medium">Category</label>
-                  <p>{selectedUser.category}</p>
-                </div>
-                <div>
-                  <label className="block font-medium">Amount</label>
-                  <p>{selectedUser.amount}</p>
-                </div>
-                <div>
-                  <label className="block font-medium">Email</label>
-                  <p>{selectedUser.email}</p>
-                </div>
-                <div>
-                  <label className="block font-medium">Address</label>
-                  <p>{selectedUser.address}</p>
-                </div>
-                <div>
-                  <label className="block font-medium">ID Card</label>
-                  <img
-                    src={selectedUser.idCard}
-                    alt="ID Card"
-                    className="w-full max-w-xs h-24 object-cover rounded border"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
+  {/* Overview Modal */}
+<Modal
+  title={null}
+  open={modalVisible}
+  onCancel={handleCloseModal}
+  footer={null}
+  width={900}
+  centered
+>
+  {selectedUser && (
+    <div className="pb-6">
+      {/* Header */}
+      <div className="flex justify-between items-center px-6 py-4 border-b">
+        <h2 className="text-xl font-bold">Owner and provider</h2>
+  
+      </div>
 
-      {/* Block User Modal */}
-      <Modal
-        title="Block User"
-        open={blockModalVisible}
-        onCancel={handleBlockCloseModal}
-        footer={[
-          <Button key="back" onClick={handleBlockCloseModal}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleBlockUser}>
-            Block User
-          </Button>,
-        ]}
-      >
-        Are you sure you want to block {selectedUser?.owner?.name}?
-      </Modal>
+      {/* Profile Images with "To" in the middle */}
+      <div className="flex items-center justify-between px-10 gap-10 py-8">
+        <div className="flex flex-col items-center">
+          <img
+            src={selectedUser.owner.avatar}
+            alt={selectedUser.owner.name}
+            className="w-24 h-24 rounded-full object-cover mb-2"
+          />
+          <p className="font-semibold">{selectedUser.owner.name}</p>
+        </div>
+
+        {/* "To" text */}
+        <div className="text-lg font-bold text-gray-700">To</div>
+
+        <div className="flex flex-col items-center mr-56">
+          <img
+            src={selectedUser.provider.avatar}
+            alt={selectedUser.provider.name}
+            className="w-24 h-24 rounded-full object-cover mb-2"
+          />
+          <p className="font-semibold">{selectedUser.provider.name}</p>
+        </div>
+      </div>
+
+      {/* Info Section */}
+      <div className="grid grid-cols-2 gap-12 px-12 py-6 text-sm leading-6">
+        {/* Owner Details */}
+        <div className="space-y-3">
+          <p><b>Name:</b> {selectedUser.owner.name}</p>
+          <p><b>Role:</b> Owner</p>
+          <p><b>Date:</b> {selectedUser.bookingDate}</p>
+          <p><b>Phone Number:</b> {selectedUser.phone}</p>
+          <p><b>Email:</b> {selectedUser.email}</p>
+          <p><b>Address:</b> {selectedUser.address}</p>
+          <p><b>Referral by:</b> {selectedUser.referredBy}</p>
+          <p><b>Total Order:</b> 15</p>
+          <p><b>Completed:</b> 10</p>
+          <p><b>Cancelled:</b> 5</p>
+        </div>
+
+        {/* Provider Details */}
+        <div className="space-y-3">
+          <p><b>Name:</b> {selectedUser.provider.name}</p>
+          <p><b>Service Category:</b></p>
+          <ul className="list-disc ml-6">
+            <li>Cleaning</li>
+            <li>Laundry</li>
+          </ul>
+          <p><b>Role:</b> Service Provider</p>
+          <p><b>Date:</b> {selectedUser.bookingDate}</p>
+          <p><b>Phone Number:</b> {selectedUser.phone}</p>
+          <p><b>Email:</b> {selectedUser.email}</p>
+          <p><b>Address:</b> {selectedUser.address}</p>
+          <p><b>Experience:</b> 2 Years</p>
+          <p><b>Referral by:</b> {selectedUser.referredBy}</p>
+          <p><b>Total Order:</b> 50</p>
+          <p><b>Completed:</b> 30</p>
+          <p><b>Cancelled:</b> 20</p>
+        </div>
+      </div>
+    </div>
+  )}
+</Modal>
+
+
+
+ 
     </div>
   );
 };

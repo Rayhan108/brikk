@@ -5,6 +5,8 @@ import UserManagement from "../pages/UserManagement/UserManagement";
 import AllOwner from "../pages/AllOwner/AllOwner";
 import AllProvider from "../pages/AllProviders/AllProviders";
 import Request from "../pages/Request/Request";
+import TransactionHistory from "../pages/TransactionHistory/TransactionHistory";
+import AllCategory from "../pages/AllCategory/AllCategory";
 
 
 
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: "/requestOverview",
         element: <Request/>,
+      },
+      {
+        path: "/transactionHistory",
+        element: <TransactionHistory/>,
+      },
+      {
+        path: "/allCategory",
+        element: <AllCategory/>,
       },
      
     ],
