@@ -30,7 +30,7 @@ console.log("setting dropdown--->",isSettingsOpen);
 const isSettingsActive = currentPath.startsWith("/setting");
   return (
     <div
-      className={`px-3 bg-[#ffffff]  h-[830px] font-title ${
+      className={`px-3 bg-[#ffffff]  h-[900px] font-title ${
         isOpen ? "translate-x-0 top-0 left-0" : "-translate-x-full"
       } lg:translate-x-0`}
     >
@@ -136,19 +136,19 @@ const isSettingsActive = currentPath.startsWith("/setting");
         <div className="relative mt-3">
           {" "}
           {/* relative container for absolute child */}
-          <Link to={""}>
+          <Link to={'/setting/updateProfile'}>
             <button
               onClick={toggleSettingsDropdown}
               className={`flex w-full justify-between items-center gap-2 mt-1 cursor-pointer whitespace-nowrap transition-all duration-300 ease-in-out ${
                 isSettingsActive
                   ? "bg-[#1B2D51] text-[#ffffff] px-3 pb-2 rounded-2xl"
-                  : ""
+                  : "text-[#0F0B18]"
               } relative`} // position relative here too for any absolute children
             >
               {/* Absolutely positioned colored bar */}
               {isSettingsActive && (
                 <div
-                  className="bg-[#1B2D51] w-[3%] -left-6 top-0 absolute h-14"
+                  className="bg-[#1B2D51] w-[3%] -left-6 top-0 absolute h-14 text-white"
                   style={{ transform: "translateX(-100%)" }}
                 ></div>
               )}
@@ -156,8 +156,8 @@ const isSettingsActive = currentPath.startsWith("/setting");
               <li
                 className={`flex items-center gap-2 mt-5 cursor-pointer transition-all duration-300 ease-in-out w-[98%]`}
               >
-                <IoMdSettings className="w-5 h-5 text-[#0F0B18]" />
-                <p className="text-lg text-[#0F0B18]">Settings</p>
+                <IoMdSettings className={`w-5 h-5 ${isSettingsActive?'text-white':'text-[#0F0B18]'} `} />
+                <p className={`text-lg ${isSettingsActive?'text-white':'text-[#0F0B18]'}`}>Settings</p>
 
                 <SlArrowDown
                   className={`w-5 h-5 text-right ml-5 hover:-rotate-90 ${
@@ -171,43 +171,39 @@ const isSettingsActive = currentPath.startsWith("/setting");
           </Link>
         </div>
 
-        {/* Settings Submenu */}
+       {/* Settings Submenu */}
         {isSettingsOpen && (
-          <ul className="text-right ">
+          <ul className="text-right">
             <Link to="/setting/updateProfile">
               <li
-                className={` flex items-center gap-2 transition-all duration-300 ease-in-out mb-5 mt-5  ${
-                  isActive("/setting/updateProfile")
-                    ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]"
-                    : "text-[#0F0B18]"
-                }`}
+                className={`flex items-center gap-2 transition-all duration-300 ease-in-out mb-5 mt-5 ${isActive("/setting/updateProfile") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
-                <IoMdInformationCircleOutline className="w-5 h-5 text-lg text-[#0F0B18]" />
-                <p className="text-lg ">Profile</p>
+                <IoMdInformationCircleOutline className={`w-5 h-5 ${isActive("/setting/updateProfile") ? 'text-white' : 'text-[#0F0B18]'}`} />
+                <p className="text-lg">Profile</p>
+              </li>
+            </Link>
+            <Link to="/setting/about">
+              <li
+                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/about") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
+              >
+                <FaRegBookmark className={`w-5 h-5 ${isActive("/setting/about") ? 'text-white' : 'text-[#0F0B18]'}`}  />
+                <p className="text-lg">About Us</p>
               </li>
             </Link>
             <Link to="/setting/terms">
               <li
-                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${
-                  isActive("/setting/terms")
-                    ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]"
-                    : "text-[#0F0B18]"
-                }`}
+                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/terms") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
-                <FaRegBookmark className="w-5 h-5 text-lg text-[#0F0B18]" />
-                <p className="text-lg ">Terms and Condition</p>
+                <FaRegBookmark className={`w-5 h-5 ${isActive("/setting/terms") ? 'text-white' : 'text-[#0F0B18]'}`}  />
+                <p className="text-lg">Terms and Condition</p>
               </li>
             </Link>
             <Link to="/setting/privacy" className="">
               <li
-                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out  ${
-                  isActive("/setting/privacy")
-                    ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]"
-                    : "text-[#0F0B18]"
-                }`}
+                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/privacy") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
-                <MdOutlinePrivacyTip className="w-5 h-5 text-lg text-[#0F0B18]" />
-                <p className="text-lg ">Privacy Policy</p>
+                <MdOutlinePrivacyTip className={`w-5 h-5 ${isActive("/setting/privacy") ? 'text-white' : 'text-[#0F0B18]'}`}  />
+                <p className="text-lg">Privacy Policy</p>
               </li>
             </Link>
           </ul>

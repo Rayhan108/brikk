@@ -11,6 +11,10 @@ import PaymentTrack from "../pages/PaymentTrack/PaymentTrack";
 import AccountSuspention from "../pages/AccountSuspention/AccountSuspention";
 import Refferal from "../pages/Refferal/Refferal";
 import ProfileStatus from "../pages/ProfileStatus/ProfileStatus";
+import Profile from "../pages/Profile/Profile";
+import About from "../pages/About/About";
+import Privacy from "../pages/Privacy/Privacy";
+import Terms from "../pages/Terms/Terms";
 
 
 
@@ -85,6 +89,22 @@ const router = createBrowserRouter([
       {
         path: "/profileStatus",
         element: <ProfileStatus/>,
+      },
+      {
+        path: "/setting/updateProfile",
+        element: <Profile/>,
+      },
+      {
+        path: "/setting/about",
+        element: <About/>,
+      },
+      {
+        path: "/setting/privacy",
+        element: <Privacy/>,
+      },
+      {
+        path: "/setting/terms",
+        element: <Terms/>,
       },
      
     ],
