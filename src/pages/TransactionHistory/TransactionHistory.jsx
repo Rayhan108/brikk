@@ -1,7 +1,7 @@
 import { useState } from "react";
 import user1 from '../../assets/user1.jpg';
 import user3 from '../../assets/user3.jpg';
-import { Avatar, Button, Input, Modal, Pagination, Table } from "antd";
+import { Avatar, Button, ConfigProvider, Input, Modal, Pagination, Table } from "antd";
 import { Expand, Search, UserX } from "lucide-react";
 
 const data =[
@@ -122,7 +122,7 @@ const TransactionHistory = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [blockModalVisible, setBlockModalVisible] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
 
@@ -135,18 +135,7 @@ const TransactionHistory = () => {
     setSelectedUser(null);
   };
 
-  const handleBlockCloseModal = () => {
-    setBlockModalVisible(false);
-    setSelectedUser(null);
-  };
 
-  const handleBlockUser = () => {
-    const updatedUsers = users.map((u) =>
-      u.id === selectedUser.id ? { ...u, status: "Blocked" } : u
-    );
-    setUsers(updatedUsers);
-    setBlockModalVisible(false);
-  };
 
   const paginatedUsers = users.slice(
     (currentPage - 1) * pageSize,
@@ -223,6 +212,29 @@ const TransactionHistory = () => {
           />
         </div>
       </div>
+    <ConfigProvider
+        theme={{
+          components: {
+            InputNumber: {
+              activeBorderColor: "#00c0b5",
+            },
+            Pagination: {
+              colorPrimaryBorder: "#00c0b5",
+              colorBorder: "#00c0b5",
+              colorPrimaryHover: "#00c0b5",
+              colorTextPlaceholder: "#00c0b5",
+              itemActiveBgDisabled: "#00c0b5",
+              colorPrimary: "#00c0b5",
+            },
+            Table: {
+              headerBg: "#1B2D51",
+              headerColor: "rgb(255,255,255)",
+              cellFontSize: 16,
+              headerSplitColor: "#1D4ED8",
+            },
+          },
+        }}
+      >
 
       <Table
         columns={columns}
@@ -233,6 +245,7 @@ const TransactionHistory = () => {
           index % 2 === 0 ? "bg-white" : "bg-gray-50"
         }
       />
+      </ConfigProvider>
 
       <div className="flex justify-center items-center">
         <Pagination
@@ -305,22 +318,6 @@ const TransactionHistory = () => {
         )}
       </Modal>
 
-      {/* Block User Modal */}
-      <Modal
-        title="Block User"
-        open={blockModalVisible}
-        onCancel={handleBlockCloseModal}
-        footer={[
-          <Button key="back" onClick={handleBlockCloseModal}>
-            Cancel
-          </Button>,
-          <Button key="submit" type="primary" onClick={handleBlockUser}>
-            Block User
-          </Button>,
-        ]}
-      >
-        Are you sure you want to block {selectedUser?.owner?.name}?
-      </Modal>
     </div>
     );
 };

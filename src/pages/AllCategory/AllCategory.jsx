@@ -95,7 +95,7 @@ const AllCategory = () => {
     </div>
 
     {/* Upload Image */}
-    <div>
+    <div> 
       <label className="block mb-2 text-lg font-medium text-gray-700">Upload Image</label>
       <Upload
         accept="image/*"

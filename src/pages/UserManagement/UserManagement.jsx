@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table, Button, Input, Avatar, Tag, Modal, Pagination } from "antd";
+import { Table, Button, Input, Avatar, Tag, Modal, Pagination, ConfigProvider } from "antd";
 import { Search, Expand } from "lucide-react";
 import user1 from "../../assets/user1.jpg";
 import user2 from "../../assets/user2.jpg";
@@ -268,6 +268,29 @@ export default function UserManagement() {
               </div>
             </div>
           </div>
+    <ConfigProvider
+        theme={{
+          components: {
+            InputNumber: {
+              activeBorderColor: "#00c0b5",
+            },
+            Pagination: {
+              colorPrimaryBorder: "#00c0b5",
+              colorBorder: "#00c0b5",
+              colorPrimaryHover: "#00c0b5",
+              colorTextPlaceholder: "#00c0b5",
+              itemActiveBgDisabled: "#00c0b5",
+              colorPrimary: "#00c0b5",
+            },
+            Table: {
+              headerBg: "#1B2D51",
+              headerColor: "rgb(255,255,255)",
+              cellFontSize: 16,
+              headerSplitColor: "#1D4ED8",
+            },
+          },
+        }}
+      >
 
           <Table
             columns={columns}
@@ -278,6 +301,7 @@ export default function UserManagement() {
               index % 2 === 0 ? "bg-white" : "bg-gray-50"
             }
           />
+      </ConfigProvider>
 
           <div className="flex justify-center items-center">
             {/* Pagination */}

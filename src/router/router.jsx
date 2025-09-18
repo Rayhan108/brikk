@@ -7,6 +7,10 @@ import AllProvider from "../pages/AllProviders/AllProviders";
 import Request from "../pages/Request/Request";
 import TransactionHistory from "../pages/TransactionHistory/TransactionHistory";
 import AllCategory from "../pages/AllCategory/AllCategory";
+import PaymentTrack from "../pages/PaymentTrack/PaymentTrack";
+import AccountSuspention from "../pages/AccountSuspention/AccountSuspention";
+import Refferal from "../pages/Refferal/Refferal";
+import ProfileStatus from "../pages/ProfileStatus/ProfileStatus";
 
 
 
@@ -65,6 +69,22 @@ const router = createBrowserRouter([
       {
         path: "/allCategory",
         element: <AllCategory/>,
+      },
+      {
+        path: "/paymentTracking",
+        element: <PaymentTrack/>,
+      },
+      {
+        path: "/accountSuspension",
+        element: <AccountSuspention/>,
+      },
+      {
+        path: "/referralProgram",
+        element: <Refferal/>,
+      },
+      {
+        path: "/profileStatus",
+        element: <ProfileStatus/>,
       },
      
     ],
