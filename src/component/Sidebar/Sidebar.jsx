@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import { FaHome, FaRegBookmark, FaRegUser } from "react-icons/fa";
 import { IoCloseSharp } from "react-icons/io5";
-import { MdOutlinePayment, MdOutlinePrivacyTip } from "react-icons/md";
+import { MdOutlinePayment, MdOutlinePolicy, MdOutlinePrivacyTip } from "react-icons/md";
 import { RiFeedbackLine } from "react-icons/ri";
 import { CgMail } from "react-icons/cg";
 import { useState } from "react"; // Import useState
@@ -11,6 +11,12 @@ import SidebarItem from "../Setting/SidebarItem";
 import LogoutSection from "../Setting/LogoutSection";
 import { IoMdInformationCircleOutline, IoMdSettings } from "react-icons/io";
 import { SlArrowDown } from "react-icons/sl";
+import { HiOutlineSquares2X2 } from "react-icons/hi2";
+import { GiProgression } from "react-icons/gi";
+import { GrTransaction } from "react-icons/gr";
+import { SiAdblock } from "react-icons/si";
+import { FiUsers } from "react-icons/fi";
+import { PiUsersThreeLight } from "react-icons/pi";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -79,7 +85,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
         {/* Request Overview */}
         <SidebarItem
           to="/requestOverview"
-          icon={<MdOutlinePayment className="w-5 h-5" />}
+          icon={<GiProgression className="w-5 h-5" />}
           label="Request Overview"
           isActive={isActive("/requestOverview")}
         />
@@ -87,7 +93,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
         {/* Transaction History */}
         <SidebarItem
           to="/transactionHistory"
-          icon={<MdOutlinePayment className="w-5 h-5" />}
+          icon={<GrTransaction  className="w-5 h-5" />}
           label="Transaction History"
           isActive={isActive("/transactionHistory")}
         />
@@ -95,7 +101,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
         {/* All Category */}
         <SidebarItem
           to="/allCategory"
-          icon={<MdOutlinePayment className="w-5 h-5" />}
+          icon={<HiOutlineSquares2X2  className="w-5 h-5" />}
           label="All Category"
           isActive={isActive("/allCategory")}
         />
@@ -111,7 +117,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
         {/* Account Suspension */}
         <SidebarItem
           to="/accountSuspension"
-          icon={<MdOutlinePayment className="w-5 h-5" />}
+          icon={<SiAdblock  className="w-5 h-5" />}
           label="Account Suspension"
           isActive={isActive("/accountSuspension")}
         />
@@ -119,7 +125,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
         {/* Referral Program */}
         <SidebarItem
           to="/referralProgram"
-          icon={<MdOutlinePayment className="w-5 h-5" />}
+          icon={<FiUsers  className="w-5 h-5" />}
           label="Referral Program"
           isActive={isActive("/referralProgram")}
         />
@@ -127,7 +133,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
         {/* Profile Status */}
         <SidebarItem
           to="/profileStatus"
-          icon={<MdOutlinePayment className="w-5 h-5" />}
+          icon={<PiUsersThreeLight className="w-5 h-5" />}
           label="Profile Status"
           isActive={isActive("/profileStatus")}
         />
@@ -194,7 +200,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
               <li
                 className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/terms") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
-                <FaRegBookmark className={`w-5 h-5 ${isActive("/setting/terms") ? 'text-white' : 'text-[#0F0B18]'}`}  />
+                <MdOutlinePolicy  className={`w-5 h-5 ${isActive("/setting/terms") ? 'text-white' : 'text-[#0F0B18]'}`}  />
                 <p className="text-lg">Terms and Condition</p>
               </li>
             </Link>
