@@ -17,7 +17,7 @@ const Sidebar = ({ isOpen, toggleSidebar }) => {
   const currentPath = location.pathname;
   const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Track the dropdown state
 
-  const user = true;
+  const user = false;
 console.log("setting dropdown--->",isSettingsOpen);
   // Helper function to check if the current path is active
   const isActive = (path) => currentPath === path;
@@ -210,7 +210,10 @@ const isSettingsActive = currentPath.startsWith("/setting");
         )}
 
         {/* Logout */}
+       
+
         <LogoutSection user={user} />
+   
       </ul>
     </div>
   );

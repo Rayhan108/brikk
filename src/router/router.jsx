@@ -15,31 +15,36 @@ import Profile from "../pages/Profile/Profile";
 import About from "../pages/About/About";
 import Privacy from "../pages/Privacy/Privacy";
 import Terms from "../pages/Terms/Terms";
+import Login from "../pages/Login/Login";
+import Otp from "../pages/Otp/Otp";
+import ForgotPass from "../pages/ForgotPass/ForgotPass";
+import SetPass from "../pages/SetPass/SetPass";
+
 
 
 
 
 const router = createBrowserRouter([
-//   {
-//     path: "/sign-in",
-//     element: <Signin />,
-//   },
-//   {
-//     path: "/verify",
-//     element: <Verify />,
-//   },
+  {
+    path: "/sign-in",
+    element: <Login />,
+  },
+  {
+    path: "/verify",
+    element: <Otp />,
+  },
 //   {
 //     path: "/passReset",
 //     element: <PassReset />,
 //   },
-//   {
-//     path: "/forget-password",
-//     element: <ForgotPass />,
-//   },
-//   {
-//     path: "/setPass",
-//     element: <SetPass />,
-//   },
+  {
+    path: "/forgotPass",
+    element: <ForgotPass />,
+  },
+  {
+    path: "/setPass",
+    element: <SetPass />,
+  },
   {
     path: "/",
     // element: <PrivetRoutes><Main></Main></PrivetRoutes>,

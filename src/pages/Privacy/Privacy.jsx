@@ -46,7 +46,7 @@ const Privacy = () => {
           />
           <div className="text-center w-full">
             <button
-              className="bg-[#1D69E1] p-2 text-white mt-2 rounded-lg w-[30%]"
+              className="bg-[#1B2D51] p-2 text-white mt-2 rounded-lg w-[30%]"
               onClick={handleSave}
             >
               Save Change
