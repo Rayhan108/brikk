@@ -165,11 +165,13 @@ const isSettingsActive = currentPath.startsWith("/setting");
                 <IoMdSettings className={`w-5 h-5 ${isSettingsActive?'text-white':'text-[#0F0B18]'} `} />
                 <p className={`text-lg ${isSettingsActive?'text-white':'text-[#0F0B18]'}`}>Settings</p>
 
-                <SlArrowDown
-                  className={`w-5 h-5 text-right ml-5 hover:-rotate-90 ${
+                <SlArrowDown 
+                  className={`w-5 h-5 text-right ml-5 hover:-rotate-180 text-white 
+                    
+                    ${
                     isSettingsActive
-                      ? "bg-[#F3F3F3] text-[#193985] px-3 py-3 rounded-2xl"
-                      : "text-[#0F0B18]"
+                      ? " hover:rotate-180"
+                      : ""
                   }`}
                 />
               </li>

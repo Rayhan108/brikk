@@ -4,23 +4,48 @@ import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { Eye, EyeOff } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
+import { message } from "antd"
+import { useDispatch } from "react-redux"
+import { useLoginMutation } from "../../redux/feature/auth/authApi"
+import { verifyToken } from "../../utils/verifyToken"
+import { setUser } from "../../redux/feature/auth/authSlice"
 
 
 
 export default function Login() {
     const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
+    const dispatch = useDispatch()
+const [login]=useLoginMutation()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm()
 
-  const onSubmit = (data) => {
-    console.log("Login data:", data)
+  const onSubmit = async(data) => {
+    // console.log('Form Data:', data);
+    // Handle sign-in logic here
+       try {
+      const res = await login(data).unwrap()
+      // console.log("response------->",res);
+      const user = verifyToken(res.data.token);
+      if(res?.success){
+        message.success(res?.message)
+  
+        dispatch(setUser({user: user, token: res.data.accessToken }))
+        navigate('/')
+      }else{
+        message.error(res?.message)
 
-navigate('/')
-  }
+      }
+    } catch (error) {
+      // console.log("login error",error)
+         message.error(error?.data?.message)
+
+    }
+
+  };
 
   return (
 <div className="flex justify-center items-center min-h-screen">
