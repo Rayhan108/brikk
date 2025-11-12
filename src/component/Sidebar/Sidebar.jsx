@@ -17,13 +17,15 @@ import { GrTransaction } from "react-icons/gr";
 import { SiAdblock } from "react-icons/si";
 import { FiUsers } from "react-icons/fi";
 import { PiUsersThreeLight } from "react-icons/pi";
+import { useAppSelector } from "../../redux/hooks";
+import { selectCurrentUser } from "../../redux/feature/auth/authSlice";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   const currentPath = location.pathname;
   const [isSettingsOpen, setIsSettingsOpen] = useState(false); // Track the dropdown state
-
-  const user = false;
+const user = useAppSelector(selectCurrentUser)
+console.log("current user----------->",user);
 console.log("setting dropdown--->",isSettingsOpen);
   // Helper function to check if the current path is active
   const isActive = (path) => currentPath === path;

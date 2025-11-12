@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux"
 import { useLoginMutation } from "../../redux/feature/auth/authApi"
 import { verifyToken } from "../../utils/verifyToken"
 import { setUser } from "../../redux/feature/auth/authSlice"
+import toast from "react-hot-toast"
+
 
 
 
@@ -26,26 +28,29 @@ const [login]=useLoginMutation()
   const onSubmit = async(data) => {
     // console.log('Form Data:', data);
     // Handle sign-in logic here
-       try {
-      const res = await login(data).unwrap()
-      // console.log("response------->",res);
-      const user = verifyToken(res.data.token);
-      if(res?.success){
-        message.success(res?.message)
+    
+    try {
+         const res = await login(data).unwrap()
+        //  console.log("response------->",res);
+         if(res?.success){
+        const user = verifyToken(res.data.token);
+        // console.log("inside success",res);
+        toast.success(res?.message)
   
         dispatch(setUser({user: user, token: res.data.accessToken }))
         navigate('/')
       }else{
-        message.error(res?.message)
+                // console.log("inside error",res);
+        toast.error(res?.error?.data?.message)
 
       }
     } catch (error) {
       // console.log("login error",error)
-         message.error(error?.data?.message)
+         toast.error(error?.data?.message)
 
     }
+  }
 
-  };
 
   return (
 <div className="flex justify-center items-center min-h-screen">
