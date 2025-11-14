@@ -19,6 +19,7 @@ import { FiUsers } from "react-icons/fi";
 import { PiUsersThreeLight } from "react-icons/pi";
 import { useAppSelector } from "../../redux/hooks";
 import { selectCurrentUser } from "../../redux/feature/auth/authSlice";
+import { GoBook } from "react-icons/go";
 
 const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
@@ -139,6 +140,13 @@ const isSettingsActive = currentPath.startsWith("/setting");
           label="Profile Status"
           isActive={isActive("/profileStatus")}
         />
+        {/* Knowledge Hub */}
+        <SidebarItem
+          to="/knowledge"
+          icon={<GoBook  className="w-5 h-5" />}
+          label="Knowledge Hub"
+          isActive={isActive("/knowledge")}
+        />
 
            {/* Settings */}
         <div className="relative mt-3">
@@ -186,7 +194,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
           <ul className="text-right">
             <Link to="/setting/updateProfile">
               <li
-                className={`flex items-center gap-2 transition-all duration-300 ease-in-out mb-5 mt-5 ${isActive("/setting/updateProfile") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
+                className={`flex items-center gap-2 transition-all duration-300 ease-in-out mb-3 mt-3 ${isActive("/setting/updateProfile") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
                 <IoMdInformationCircleOutline className={`w-5 h-5 ${isActive("/setting/updateProfile") ? 'text-white' : 'text-[#0F0B18]'}`} />
                 <p className="text-lg">Profile</p>
@@ -194,7 +202,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
             </Link>
             <Link to="/setting/about">
               <li
-                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/about") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
+                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/about") ? "pl-3 pr-5 py-[12px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
                 <FaRegBookmark className={`w-5 h-5 ${isActive("/setting/about") ? 'text-white' : 'text-[#0F0B18]'}`}  />
                 <p className="text-lg">About Us</p>
@@ -202,7 +210,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
             </Link>
             <Link to="/setting/terms">
               <li
-                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/terms") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
+                className={`pb-2 flex items-center gap-2 transition-all duration-300 ease-in-out mb-1 ${isActive("/setting/terms") ? "pl-3 pr-5 py-[12px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
                 <MdOutlinePolicy  className={`w-5 h-5 ${isActive("/setting/terms") ? 'text-white' : 'text-[#0F0B18]'}`}  />
                 <p className="text-lg">Terms and Condition</p>
@@ -210,7 +218,7 @@ const isSettingsActive = currentPath.startsWith("/setting");
             </Link>
             <Link to="/setting/privacy" className="">
               <li
-                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/privacy") ? "pl-3 pr-5 py-[14px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
+                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/privacy") ? "pl-3 pr-5 py-[12px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
               >
                 <MdOutlinePrivacyTip className={`w-5 h-5 ${isActive("/setting/privacy") ? 'text-white' : 'text-[#0F0B18]'}`}  />
                 <p className="text-lg">Privacy Policy</p>

@@ -19,6 +19,7 @@ import Login from "../pages/Login/Login";
 import Otp from "../pages/Otp/Otp";
 import ForgotPass from "../pages/ForgotPass/ForgotPass";
 import SetPass from "../pages/SetPass/SetPass";
+import KnowledgeHub from "../pages/KnowledgeHub/KnowledgeHub";
 
 
 
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
       {
         path: "/profileStatus",
         element: <ProfileStatus/>,
+      },
+      {
+        path: "/knowledge",
+        element: <KnowledgeHub/>,
       },
       {
         path: "/setting/updateProfile",
