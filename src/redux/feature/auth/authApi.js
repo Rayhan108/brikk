@@ -12,7 +12,7 @@ const authApi = baseApi.injectEndpoints({
 
     sendOtp: builder.mutation({
       query: (args) => ({
-        url: '/auth/forget-password',
+        url: '/auth/forgot-password',
         method: "POST",
         body: args,
         
@@ -30,7 +30,7 @@ const authApi = baseApi.injectEndpoints({
     }),
     verifyOtp: builder.mutation({
       query: (args) => ({
-        url: '/auth/verify-reset-otp',
+        url: '/auth/verify-forgot-password-otp',
         method: "POST",
         body: args,
         

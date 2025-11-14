@@ -4,23 +4,47 @@ import { useForm } from "react-hook-form"
 import { useState } from "react"
 
 import { useNavigate } from "react-router-dom"
+import { useSendOtpMutation } from "../../redux/feature/auth/authApi"
+import { message } from "antd"
+
 
 
 
 export default function ForgotPass() {
-    const navigate = useNavigate()
-  const [showPassword, setShowPassword] = useState(false)
+const [sendOtp] =useSendOtpMutation()
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm()
+  } = useForm();
+const navigate = useNavigate();
+  const onSubmit = async(data) => {
+    console.log('Form Data:', data);
+    const email = data?.email
 
-  const onSubmit = (data) => {
-    console.log("Login data:", data)
+       try {
+      const res = await sendOtp(data).unwrap()
 
-navigate('/verify')
-  }
+      console.log("response------->",res);
+ 
+      if(res?.success){
+        message.success(res?.message)
+ 
+        navigate('/verify')
+      }else{
+        message.error(res?.message)
+   
+      }
+    } catch (error) {
+      console.log("login error",error)
+         message.error(error?.data?.message)
+
+    }
+
+    // Handle reset code sending logic here
+  };
+
 
   return (
 <div className="flex justify-center items-center min-h-screen">
