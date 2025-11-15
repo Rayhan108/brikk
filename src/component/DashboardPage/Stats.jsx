@@ -4,9 +4,10 @@ import { IoCardOutline } from "react-icons/io5";
 
 
 
-const Stats = () => {
 
-    
+const Stats = ({summary}) => {
+
+  console.log("summary------->",summary); 
     return (
         <div className="grid grid-cols-3 gap-5 mb-2">
             <div className=" text-white bg-[#FFFFFF] shadow-2xl px-16 rounded-xl flex gap-3 justify-center items-center py-5">
@@ -16,7 +17,7 @@ const Stats = () => {
                </div>
               <div>
                   <p className="font-title text-[#0F0B18] text-xl pb-2 ">Total Owner</p>
-                <p className="font-title  text-xl text-[#0F0B18]  pt-2">100</p>
+                <p className="font-title  text-xl text-[#0F0B18]  pt-2">{summary?.totalOwners}</p>
               </div>
             </div>
             <div className=" text-white bg-[#FFFFFF] shadow-2xl px-16 rounded-xl flex gap-3 justify-center items-center py-5">
@@ -26,7 +27,7 @@ const Stats = () => {
                </div>
               <div>
                   <p className="font-title text-[#0F0B18] text-xl pb-2 ">Total Service Provider</p>
-                <p className="font-title  text-xl text-[#0F0B18]  pt-2">20</p>
+                <p className="font-title  text-xl text-[#0F0B18]  pt-2">{summary?.totalProviders}</p>
               </div>
             </div>
             <div className=" text-white bg-[#FFFFFF] shadow-2xl px-16 rounded-xl flex gap-3 justify-center items-center py-5">

@@ -36,7 +36,8 @@ const [login]=useLoginMutation()
         // console.log("inside success",res);
         toast.success(res?.message)
   
-        dispatch(setUser({user: user, token: res.data.accessToken }))
+        dispatch(setUser({user: user, token: res.data.token }))
+
         navigate('/')
       }else{
                 // console.log("inside error",res);

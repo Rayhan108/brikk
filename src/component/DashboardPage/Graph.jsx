@@ -35,7 +35,8 @@ const earningData = [
   { month: "Dec", value: 85 },
 ]
 
-export default function Graph() {
+export default function Graph({ownerOverview}) {
+  console.log("ownerOverview--------->",ownerOverview);
   const [ownerYear, setOwnerYear] = useState("2024")
   const [earningYear, setEarningYear] = useState("2024")
 
