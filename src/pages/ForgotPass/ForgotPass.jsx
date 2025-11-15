@@ -6,6 +6,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useSendOtpMutation } from "../../redux/feature/auth/authApi"
 import { message } from "antd"
+import toast from "react-hot-toast"
 
 
 
@@ -22,23 +23,23 @@ const navigate = useNavigate();
   const onSubmit = async(data) => {
     console.log('Form Data:', data);
     const email = data?.email
-
+localStorage.setItem("Admin_Email",email)
        try {
       const res = await sendOtp(data).unwrap()
 
       console.log("response------->",res);
  
       if(res?.success){
-        message.success(res?.message)
+        toast.success(res?.message)
  
         navigate('/verify')
       }else{
-        message.error(res?.message)
+        toast.error(res?.message)
    
       }
     } catch (error) {
       console.log("login error",error)
-         message.error(error?.data?.message)
+         toast.error(error?.data?.message)
 
     }
 

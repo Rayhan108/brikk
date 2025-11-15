@@ -2,8 +2,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { message } from "antd";
+import { useResetPassMutation } from "../../redux/feature/auth/authApi";
+import toast from "react-hot-toast";
 
 export default function SetPass() {
+  const [resetPass] = useResetPassMutation();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -11,11 +15,26 @@ export default function SetPass() {
     handleSubmit,
     formState: { errors },
   } = useForm();
+  const email = localStorage.getItem("Admin_Email");
+  const onSubmit = async (data) => {
+    const modifiedData = {
+      email,
+      confirmPassword: data?.confirmPassword,
+      newPassword: data?.newPassword,
+    };
 
-  const onSubmit = (data) => {
-    console.log("Login data:", data);
+    try {
+      const res = await resetPass(modifiedData).unwrap();
+      if (res?.success) {
+       toast.success(res?.message);
+        navigate("/sign-in");
 
-    navigate("/");
+      } else {
+        toast.error(res?.message);
+      }
+    } catch (error) {
+      toast.error(error?.data?.message || "Something went wrong");
+    }
   };
 
   return (
@@ -23,23 +42,21 @@ export default function SetPass() {
       <div className="w-[30%]  bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
         <div className="text-center mb-8">
           <h1 className="text-2xl font-semibold text-gray-900 mb-2">
-          Set A New Password
+            Set A New Password
           </h1>
           <p className="text-gray-600 text-sm">
-         Create a new password. Ensure it differs from
-previous ones for security
+            Create a new password. Ensure it differs from previous ones for
+            security
           </p>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-
-
           <div>
             <label
               htmlFor="password"
               className="block text-sm font-medium text-gray-900 mb-2"
             >
-             New Password
+              New Password
             </label>
             <div className="relative">
               <input
@@ -74,7 +91,7 @@ previous ones for security
               htmlFor="password"
               className="block text-sm font-medium text-gray-900 mb-2"
             >
-            Confirm Password
+              Confirm Password
             </label>
             <div className="relative">
               <input
@@ -105,13 +122,11 @@ previous ones for security
             )}
           </div>
 
-    
-
           <button
             type="submit"
             className="w-full bg-slate-800 hover:bg-slate-900 text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
           >
-         Update Password
+            Update Password
           </button>
         </form>
       </div>

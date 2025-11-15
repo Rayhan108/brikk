@@ -1,17 +1,19 @@
 "use client";
 
 import { useForm, Controller } from "react-hook-form";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
+
 import { useSendOtpMutation, useVerifyOtpMutation } from "../../redux/feature/auth/authApi";
+import toast from "react-hot-toast";
 
 
 export default function Otp() {
   const navigate = useNavigate();
   const inputRefs = useRef([]);
 
-  const [email, setEmail] = useState(""); // ensure you set this before coming to OTP page
+const email = localStorage.getItem('Admin_Email')
+console.log("Admin_Email--->",email);
 
   const { control, handleSubmit, watch, setValue } = useForm({
     defaultValues: {
@@ -20,6 +22,7 @@ export default function Otp() {
       digit3: "",
       digit4: "",
       digit5: "",
+      digit6: "",
     },
   });
 
@@ -29,7 +32,7 @@ export default function Otp() {
   // Handle OTP verification
   const onSubmit = async (data) => {
     const verifyCode =
-      data.digit1 + data.digit2 + data.digit3 + data.digit4 + data.digit5;
+      data.digit1 + data.digit2 + data.digit3 + data.digit4 + data.digit5 + data.digit6;
 
     const modifiedData = {
       email,
@@ -39,32 +42,32 @@ export default function Otp() {
     try {
       const res = await verifyOtp(modifiedData).unwrap();
       if (res?.success) {
-        message.success(res?.message);
+        toast.success(res?.message);
         navigate("/setPass");
       } else {
-        message.error(res?.message);
+        toast.error(res?.message);
       }
     } catch (error) {
-      message.error(error?.data?.message || "Something went wrong");
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
   // Resend OTP
   const handleResendOtp = async () => {
     if (!email) {
-      message.error("Please enter your email before requesting a resend.");
+      toast.error("Please enter your email before requesting a resend.");
       return;
     }
 
     try {
       const res = await sendOtp({ email }).unwrap();
       if (res?.success) {
-        message.success(res?.message);
+        toast.success(res?.message);
       } else {
-        message.error(res?.message);
+        toast.error(res?.message);
       }
     } catch (error) {
-      message.error(error?.data?.message || "Something went wrong");
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
@@ -101,8 +104,9 @@ export default function Otp() {
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
+          
           <div className="flex justify-center gap-3">
-            {[0, 1, 2, 3, 4].map((index) => (
+            {[0, 1, 2, 3, 4,5].map((index) => (
               <Controller
                 key={index}
                 name={`digit${index + 1}`}
