@@ -1,165 +1,81 @@
 import React, { useState } from 'react';
 import { Table, Button, Avatar, Modal, Tag, Pagination, Input, ConfigProvider, } from 'antd';
 import { Expand, Search, UserX } from 'lucide-react'; 
-import user1 from '../../assets/user1.jpg';
-import user2 from '../../assets/user2.jpg';
-import user3 from '../../assets/user3.jpg';
-import idCard from '../../assets/idcard.jpg';
 
-const userData = [
-  {
-    id: 1,
-    name: "Jacob",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Accept",
-    avatar: user1,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 2,
-    name: "Michal",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Accept",
-    avatar: user2,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 3,
-    name: "Joshua",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Reject",
-    avatar: user3,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 4,
-    name: "Matthew",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Accept",
-    avatar: user1,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 5,
-    name: "Daniel",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Reject",
-    avatar: user2,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 6,
-    name: "Benjamin",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Reject",
-    avatar: user3,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-];
+import { useGetAllOwnersQuery, useSingleUsersQuery } from '../../redux/feature/userManagement/userManagementApi';
+
 
 const AllOwner = () => {
-  const [users, setUsers] = useState(userData);
+
     const [searchText, setSearchText] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [blockModalVisible, setBlockModalVisible] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
 
+  const pageSize = 10;
+    const [page, setPage] = useState(1);
+    const [id, setId] = useState("");
+    const dataLimit = 10;
+  const { data: allOwners } = useGetAllOwnersQuery({ limit: dataLimit, page });
   const handlePageChange = (page) => {
-    setCurrentPage(page);
+    setPage(page);
   };
+const { data: singleUser } = useSingleUsersQuery(id, {skip: !id,});
+
+//   const { data: searchData } = useSearchUsersQuery(searchTerm);
+// console.log("search users----->",searchData);
+console.log("single users----->",singleUser);
+const filteredUsers = (allOwners?.data)?.filter((user) => {
+  // Ensure that user.name and user.email are defined before calling toLowerCase
+  const searchMatch =
+    (user.name && user.name.toLowerCase().includes(searchText.toLowerCase())) ||
+    (user.email && user.email.toLowerCase().includes(searchText.toLowerCase()));
+
+  return searchMatch;
+});
+
+
+
+
+
+
+
 
   const handleOverviewClick = (user) => {
-    setSelectedUser(user);
+  setId(user?._id)
     setModalVisible(true);
   };
 
   const handleBlockClick = (user) => {
-    setSelectedUser(user);
+     setId(user?._id)
     setBlockModalVisible(true);
   };
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setSelectedUser(null);
+
   };
 
   const handleBlockCloseModal = () => {
     setBlockModalVisible(false);
-    setSelectedUser(null);
+  
   };
 
   const handleBlockUser = () => {
-    // Block user logic (just set the status to 'Blocked')
-    const updatedUsers = users.map((user) =>
-      user.id === selectedUser.id ? { ...user, status: 'Blocked' } : user
-    );
-    setUsers(updatedUsers);
+
     setBlockModalVisible(false);
   };
 
-  const paginatedUsers = users.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+
 
   const columns = [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "userName",
       key: "name",
       render: (text, record) => (
         <div className="flex items-center gap-3">
-          <Avatar src={record.avatar} size={40} />
+          <Avatar src={record.profilePicture} size={40} />
           <span className="font-medium text-gray-900">{text}</span>
         </div>
       ),
@@ -172,13 +88,13 @@ const AllOwner = () => {
     },
     {
       title: "Date",
-      dataIndex: "date",
+      dataIndex: "createdAt",
       key: "date",
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
     {
       title: "Phone No",
-      dataIndex: "phone",
+      dataIndex: "phoneNumber",
       key: "phone",
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
@@ -194,16 +110,16 @@ const AllOwner = () => {
       key: "address",
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (status) => (
-        <Tag color={status === 'Accept' ? "orange" : status === 'Reject' ? 'red' : 'gray'} className="px-3 py-1 rounded font-medium border-0">
-          {status}
-        </Tag>
-      ),
-    },
+    // {
+    //   title: "Status",
+    //   dataIndex: "status",
+    //   key: "status",
+    //   render: (status) => (
+    //     <Tag color={status === 'Accept' ? "orange" : status === 'Reject' ? 'red' : 'gray'} className="px-3 py-1 rounded font-medium border-0">
+    //       {status}
+    //     </Tag>
+    //   ),
+    // },
     {
       title: "Actions",
       key: "actions",
@@ -269,72 +185,73 @@ const AllOwner = () => {
 
       <Table
         columns={columns}
-        dataSource={paginatedUsers}
+        dataSource={filteredUsers}
         pagination={false}
         rowClassName={(record, index) => (index % 2 === 0 ? "bg-white" : "bg-gray-50")}
       />
       </ConfigProvider>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center">
-        <Pagination
-          current={currentPage}
-          total={users.length}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-          showSizeChanger={false}
-          className="my-4 text-center"
-        />
-      </div>
+          <div className="flex justify-center items-center">
+            <Pagination
+              current={page}
+              total={allOwners?.meta?.total}
+              pageSize={dataLimit}
+              onChange={handlePageChange}
+              showSizeChanger={false}
+            />
+          </div>
 
       {/* User Overview Modal */}
-      <Modal
-        title="User Overview"
-        visible={modalVisible}
-        onCancel={handleCloseModal}
-        footer={[
-          <Button key="back" onClick={handleCloseModal}>
-            Close
-          </Button>,
-        ]}
-      >
-        {selectedUser && (
-          <div className="pb-6">
-            <div className="flex justify-center py-5 shadow-2xl">
-              <img
-                src={selectedUser.avatar || "/placeholder.svg"}
-                alt={selectedUser.name}
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            </div>
-
-            <div className="bg-gray-100 w-full">
-              <div className="space-y-4 px-5 py-5">
-                {Object.keys(selectedUser).map((key) => {
-                  if (key === "idCard") return null; // Skip rendering the ID card image
-                  return (
-                    <div key={key}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">{key.replace(/([A-Z])/g, ' $1')}</label>
-                      <div className="text-gray-900">
-                        {typeof selectedUser[key] === "string" ? selectedUser[key] : JSON.stringify(selectedUser[key])}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
-                  <img
-                    src={selectedUser.idCard}
-                    alt="ID Card"
-                    className="w-full max-w-xs h-24 object-cover rounded border"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
+     <Modal
+         title="User Overview"
+         visible={modalVisible}
+         onCancel={handleCloseModal}
+         footer={[<Button key="back" onClick={handleCloseModal}>Close</Button>]}
+       >
+         {singleUser && (
+           <div className="pb-6">
+             <div className="flex justify-center py-5 shadow-2xl">
+               <img
+                 src={singleUser?.data?.profilePicture}
+                 alt={singleUser?.data?.userName}
+                 className="w-20 h-20 rounded-full object-cover"
+               />
+             </div>
+ 
+             <div className="bg-gray-100 w-full">
+               <div className="space-y-4 px-5 py-5">
+                 {Object.keys(singleUser?.data)?.map((key) => {
+                   if (key === "_id") return null;
+                   if (key === "NIDFront") return null;
+                   if (key === "createdAt") return null;
+                   return (
+                     <div key={key}>
+                       <label className="block text-sm font-medium text-gray-700 mb-1">
+                         {key.replace(/([A-Z])/g, " $1")}
+                       </label>
+                       <div className="text-gray-900">
+                         {typeof singleUser?.data?.[key] === "string"
+                           ? singleUser?.data?.[key]
+                           : JSON.stringify(singleUser?.data?.[key])}
+                       </div>
+                     </div>
+                   );
+                 })}
+ 
+                 <div>
+                   <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
+                   <img
+                     src={singleUser?.data?.NIDFront}
+                     alt="ID Card"
+                     className="w-full max-w-xs h-24 object-cover rounded border"
+                   />
+                 </div>
+               </div>
+             </div>
+           </div>
+         )}
+       </Modal>
 
       {/* Block User Modal */}
       <Modal
@@ -350,7 +267,7 @@ const AllOwner = () => {
           </Button>,
         ]}
       >
-        Are you sure you want to block {selectedUser?.name}?
+        Are you sure you want to block {singleUser?.userName}?
       </Modal>
     </div>
   );

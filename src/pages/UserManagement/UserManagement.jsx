@@ -17,8 +17,8 @@ export default function UserManagement() {
   const [activeTab, setActiveTab] = useState("Owner");
   const [searchText, setSearchText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
+const { data: singleUser } = useSingleUsersQuery(id, {skip: !id,});
 
- const {data:singleUser}=useSingleUsersQuery(id)
 //   const { data: searchData } = useSearchUsersQuery(searchTerm);
 // console.log("search users----->",searchData);
 console.log("single users----->",singleUser);
@@ -188,54 +188,55 @@ const filteredUsers = (activeTab === "Owner" ? allOwners?.data : allProviders?.d
       </div>
 
       {/* User Overview Modal */}
-      <Modal
-        title="User Overview"
-        visible={modalVisible}
-        onCancel={handleCloseModal}
-        footer={[<Button key="back" onClick={handleCloseModal}>Close</Button>]}
-      >
-        {singleUser && (
-          <div className="pb-6">
-            <div className="flex justify-center py-5 shadow-2xl">
-              <img
-                src={singleUser?.data?.profilePicture}
-                alt={singleUser?.data?.userName}
-                className="w-20 h-20 rounded-full object-cover"
-              />
-            </div>
-
-            <div className="bg-gray-100 w-full">
-              <div className="space-y-4 px-5 py-5">
-                {Object.keys(singleUser?.data)?.map((key) => {
-                  if (key === "_id") return null;
-                  if (key === "idCard") return null;
-                  return (
-                    <div key={key}>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                        {key.replace(/([A-Z])/g, " $1")}
-                      </label>
-                      <div className="text-gray-900">
-                        {typeof singleUser?.data?.[key] === "string"
-                          ? singleUser?.data?.[key]
-                          : JSON.stringify(singleUser?.data?.[key])}
-                      </div>
-                    </div>
-                  );
-                })}
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
-                  <img
-                    src={singleUser?.data?.idCard}
-                    alt="ID Card"
-                    className="w-full max-w-xs h-24 object-cover rounded border"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-      </Modal>
+       <Modal
+           title="User Overview"
+           visible={modalVisible}
+           onCancel={handleCloseModal}
+           footer={[<Button key="back" onClick={handleCloseModal}>Close</Button>]}
+         >
+           {singleUser && (
+             <div className="pb-6">
+               <div className="flex justify-center py-5 shadow-2xl">
+                 <img
+                   src={singleUser?.data?.profilePicture}
+                   alt={singleUser?.data?.userName}
+                   className="w-20 h-20 rounded-full object-cover"
+                 />
+               </div>
+   
+               <div className="bg-gray-100 w-full">
+                 <div className="space-y-4 px-5 py-5">
+                   {Object.keys(singleUser?.data)?.map((key) => {
+                     if (key === "_id") return null;
+                     if (key === "NIDFront") return null;
+                     if (key === "createdAt") return null;
+                     return (
+                       <div key={key}>
+                         <label className="block text-sm font-medium text-gray-700 mb-1">
+                           {key.replace(/([A-Z])/g, " $1")}
+                         </label>
+                         <div className="text-gray-900">
+                           {typeof singleUser?.data?.[key] === "string"
+                             ? singleUser?.data?.[key]
+                             : JSON.stringify(singleUser?.data?.[key])}
+                         </div>
+                       </div>
+                     );
+                   })}
+   
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
+                     <img
+                       src={singleUser?.data?.NIDFront}
+                       alt="ID Card"
+                       className="w-full max-w-xs h-24 object-cover rounded border"
+                     />
+                   </div>
+                 </div>
+               </div>
+             </div>
+           )}
+         </Modal>
     </div>
   );
 }
