@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Table, Button, Avatar, Modal, Tag, Pagination, Input, ConfigProvider, } from 'antd';
 import { Expand, Search, UserX } from 'lucide-react'; 
 
-import { useGetAllOwnersQuery, useSingleUsersQuery } from '../../redux/feature/userManagement/userManagementApi';
+import { useBlockUsersMutation, useGetAllOwnersQuery, useSingleUsersQuery } from '../../redux/feature/userManagement/userManagementApi';
+import toast from 'react-hot-toast';
 
 
 const AllOwner = () => {
@@ -21,7 +22,7 @@ const AllOwner = () => {
     setPage(page);
   };
 const { data: singleUser } = useSingleUsersQuery(id, {skip: !id,});
-
+const [blockUser]=useBlockUsersMutation()
 //   const { data: searchData } = useSearchUsersQuery(searchTerm);
 // console.log("search users----->",searchData);
 console.log("single users----->",singleUser);
@@ -60,8 +61,21 @@ const filteredUsers = (allOwners?.data)?.filter((user) => {
     setBlockModalVisible(false);
   
   };
-
-  const handleBlockUser = () => {
+// block user method
+  const handleBlockUser = async() => {
+    const data={isActive:false}
+    try {
+     const res = await blockUser({data,id})
+console.log("response---->",res);
+if(res?.data?.success){
+  toast.success(res?.data?.message)
+}else{
+  toast.error(res?.data?.message)
+} 
+    } catch (error) {
+     console.log("Error",error);
+     toast?.error(error?.message) 
+    }
 
     setBlockModalVisible(false);
   };

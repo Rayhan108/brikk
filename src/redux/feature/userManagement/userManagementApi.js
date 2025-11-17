@@ -29,6 +29,13 @@ const userManagementApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    blockUsers: builder.mutation({
+      query: ({data,id}) => ({
+        url: `/admin/users/status/${id}`,
+        method: "PATCH",
+        body:data
+      }),
+    }),
   }),
 });
 
@@ -37,4 +44,5 @@ export const {
   useGetAllProvidersQuery,
   useSingleUsersQuery,
   useSearchUsersQuery,
+  useBlockUsersMutation
 } = userManagementApi;
