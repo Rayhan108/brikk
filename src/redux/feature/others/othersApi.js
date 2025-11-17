@@ -3,10 +3,10 @@ import { baseApi } from "../../api/baseApi";
 const othersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStats: builder.query({
-      query: () => ({
+      query: (year) => ({
         url:"/admin/statistics",
         method: "GET",
-
+params:{year}
       }),
     }),
     recentJoinUsers: builder.query({

@@ -1,148 +1,51 @@
 import { useState } from "react";
-import { Table, Button, Input, Avatar, Tag, Modal, Pagination, ConfigProvider } from "antd";
+import { Table, Button, Input, Avatar, Modal, Pagination, ConfigProvider } from "antd";
 import { Search, Expand } from "lucide-react";
-import user1 from "../../assets/user1.jpg";
-import user2 from "../../assets/user2.jpg";
-import user3 from "../../assets/user3.jpg";
-import idCard from "../../assets/idcard.jpg";
-
-const userData = [
-  {
-    id: 1,
-    name: "Jacob",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Accept",
-    avatar: user1,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 2,
-    name: "Michal",
-    role: "Service Provider",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Accept",
-    avatar: user2,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 3,
-    name: "Joshua",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Reject",
-    avatar: user3,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 4,
-    name: "Matthew",
-    role: "Service Provider",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Accept",
-    avatar: user1,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 5,
-    name: "Daniel",
-    role: "Owner",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Reject",
-    avatar: user2,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-  {
-    id: 6,
-    name: "Benjamin",
-    role: "Service Provider",
-    date: "20/07/2025 - 5:15 PM",
-    phone: "01840560614",
-    email: "jacob@gmail.com",
-    address: "Dhaka, Mohakhali",
-    status: "Reject",
-    avatar: user3,
-    experience: "3 years",
-    about:
-      "Hello! I'm a dedicated property owner with a passion for creating comfortable and welcoming spaces for tenants.",
-    referredBy: "Michael",
-    idCard: idCard,
-  },
-];
+;
+import { useGetAllOwnersQuery, useGetAllProvidersQuery, useSingleUsersQuery} from "../../redux/feature/userManagement/userManagementApi";
 
 export default function UserManagement() {
-  const [users, setUsers] = useState(userData);
-  const [activeTab, setActiveTab] = useState("Owner"); // Default is Owner
+  const [page, setPage] = useState(1);
+  const [id, setId] = useState("");
+  const dataLimit = 10;
+
+  // Fetch data based on active tab
+  const { data: allOwners } = useGetAllOwnersQuery({ limit: dataLimit, page });
+  const { data: allProviders } = useGetAllProvidersQuery({ limit: dataLimit, page });
+
+  // Handling tab selection
+  const [activeTab, setActiveTab] = useState("Owner");
   const [searchText, setSearchText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10; // Adjust this based on how many rows you want per page
-  const handleStatusChange = (userId, newStatus) => {
-    setUsers(
-      users.map((user) =>
-        user.id === userId ? { ...user, status: newStatus } : user
-      )
-    );
+
+ const {data:singleUser}=useSingleUsersQuery(id)
+//   const { data: searchData } = useSearchUsersQuery(searchTerm);
+// console.log("search users----->",searchData);
+console.log("single users----->",singleUser);
+
+  // Handle page change
+  const onPageChange = (page) => {
+    setPage(page);
   };
 
-  const filteredUsers = userData.filter((user) => {
-    // Filter by role and search text
-    const roleMatch = user.role === activeTab;
-    const searchMatch =
-      user.name.toLowerCase().includes(searchText.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchText.toLowerCase());
-    return roleMatch && searchMatch;
-  });
+const filteredUsers = (activeTab === "Owner" ? allOwners?.data : allProviders?.data)?.filter((user) => {
+  // Ensure that user.name and user.email are defined before calling toLowerCase
+  const searchMatch =
+    (user.name && user.name.toLowerCase().includes(searchText.toLowerCase())) ||
+    (user.email && user.email.toLowerCase().includes(searchText.toLowerCase()));
 
-  const paginatedUsers = filteredUsers.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
+  return searchMatch;
+});
 
+  // Columns configuration
   const columns = [
     {
       title: "Name",
-      dataIndex: "name",
+      dataIndex: "userName",
       key: "name",
       render: (text, record) => (
         <div className="flex items-center gap-3">
-          <Avatar src={record.avatar} size={40} />
+          <Avatar src={record.profilePicture} size={40} />
           <span className="font-medium text-gray-900">{text}</span>
         </div>
       ),
@@ -155,13 +58,13 @@ export default function UserManagement() {
     },
     {
       title: "Date",
-      dataIndex: "date",
+      dataIndex: "createdAt",
       key: "date",
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
     {
       title: "Phone No",
-      dataIndex: "phone",
+      dataIndex: "phoneNumber",
       key: "phone",
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
@@ -178,25 +81,6 @@ export default function UserManagement() {
       render: (text) => <span className="text-gray-600">{text}</span>,
     },
     {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: (text, record) => (
-        <select
-          value={text}
-          onChange={(e) => handleStatusChange(record.id, e.target.value)}
-          className={`px-3 py-1 rounded text-sm font-medium border-none outline-none cursor-pointer ${
-            text === "Accept"
-              ? "bg-orange-500 text-white"
-              : "bg-red-500 text-white"
-          }`}
-        >
-          <option value="Accept">Accept</option>
-          <option value="Reject">Reject</option>
-        </select>
-      ),
-    },
-    {
       title: "Overview",
       key: "overview",
       render: (_, record) => (
@@ -210,18 +94,17 @@ export default function UserManagement() {
     },
   ];
 
+  // Overview click handler
   const handleOverviewClick = (user) => {
-    setSelectedUser(user);
+    console.log("single user----->",user);
+   setId(user?._id)
+
     setModalVisible(true);
   };
 
   const handleCloseModal = () => {
     setModalVisible(false);
-    setSelectedUser(null);
-  };
 
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
   };
 
   return (
@@ -231,9 +114,7 @@ export default function UserManagement() {
           <div className="px-6 py-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-6">
-                <h1 className="text-2xl font-semibold text-gray-900">
-                  User Management
-                </h1>
+                <h1 className="text-2xl font-semibold text-gray-900">User Management</h1>
                 <div className="flex bg-gray-100 rounded-lg p-1">
                   <button
                     onClick={() => setActiveTab("Owner")}
@@ -246,9 +127,9 @@ export default function UserManagement() {
                     Owner
                   </button>
                   <button
-                    onClick={() => setActiveTab("Service Provider")}
+                    onClick={() => setActiveTab("Provider")}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      activeTab === "Service Provider"
+                      activeTab === "Provider"
                         ? "bg-slate-800 text-white"
                         : "text-gray-600 hover:text-gray-900"
                     }`}
@@ -268,50 +149,39 @@ export default function UserManagement() {
               </div>
             </div>
           </div>
-    <ConfigProvider
-        theme={{
-          components: {
-            InputNumber: {
-              activeBorderColor: "#00c0b5",
-            },
-            Pagination: {
-              colorPrimaryBorder: "#00c0b5",
-              colorBorder: "#00c0b5",
-              colorPrimaryHover: "#00c0b5",
-              colorTextPlaceholder: "#00c0b5",
-              itemActiveBgDisabled: "#00c0b5",
-              colorPrimary: "#00c0b5",
-            },
-            Table: {
-              headerBg: "#1B2D51",
-              headerColor: "rgb(255,255,255)",
-              cellFontSize: 16,
-              headerSplitColor: "#1D4ED8",
-            },
-          },
-        }}
-      >
 
-          <Table
-            columns={columns}
-            dataSource={paginatedUsers}
-            pagination={false}
-            className="custom-table text-center"
-            rowClassName={(record, index) =>
-              index % 2 === 0 ? "bg-white" : "bg-gray-50"
-            }
-          />
-      </ConfigProvider>
+          <ConfigProvider
+            theme={{
+              components: {
+                Pagination: {
+                  colorPrimary: "#00c0b5",
+                },
+                Table: {
+                  headerBg: "#1B2D51",
+                  headerColor: "rgb(255,255,255)",
+                  cellFontSize: 16,
+                  headerSplitColor: "#1D4ED8",
+                },
+              },
+            }}
+          >
+            <Table
+              columns={columns}
+              dataSource={filteredUsers}
+              pagination={false}
+              className="custom-table text-center"
+              rowClassName={(record, index) => (index % 2 === 0 ? "bg-white" : "bg-gray-50")}
+            />
+          </ConfigProvider>
 
+          {/* Pagination */}
           <div className="flex justify-center items-center">
-            {/* Pagination */}
             <Pagination
-              current={currentPage}
-              total={filteredUsers.length}
-              pageSize={pageSize}
-              onChange={handlePageChange}
+              current={page}
+              total={activeTab === "Owner" ? allOwners?.meta?.total : allProviders?.meta?.total}
+              pageSize={dataLimit}
+              onChange={onPageChange}
               showSizeChanger={false}
-              className="my-4 text-center"
             />
           </div>
         </div>
@@ -322,46 +192,41 @@ export default function UserManagement() {
         title="User Overview"
         visible={modalVisible}
         onCancel={handleCloseModal}
-        footer={[
-          <Button key="back" onClick={handleCloseModal}>
-            Close
-          </Button>,
-        ]}
+        footer={[<Button key="back" onClick={handleCloseModal}>Close</Button>]}
       >
-        {selectedUser && (
+        {singleUser && (
           <div className="pb-6">
             <div className="flex justify-center py-5 shadow-2xl">
               <img
-                src={selectedUser.avatar || "/placeholder.svg"}
-                alt={selectedUser.name}
+                src={singleUser?.data?.profilePicture}
+                alt={singleUser?.data?.userName}
                 className="w-20 h-20 rounded-full object-cover"
               />
             </div>
 
             <div className="bg-gray-100 w-full">
               <div className="space-y-4 px-5 py-5">
-                {Object.keys(selectedUser).map((key) => {
-                  if (key === "idCard") return null; // Skip rendering the ID card image
+                {Object.keys(singleUser?.data)?.map((key) => {
+                  if (key === "_id") return null;
+                  if (key === "idCard") return null;
                   return (
                     <div key={key}>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         {key.replace(/([A-Z])/g, " $1")}
                       </label>
                       <div className="text-gray-900">
-                        {typeof selectedUser[key] === "string"
-                          ? selectedUser[key]
-                          : JSON.stringify(selectedUser[key])}
+                        {typeof singleUser?.data?.[key] === "string"
+                          ? singleUser?.data?.[key]
+                          : JSON.stringify(singleUser?.data?.[key])}
                       </div>
                     </div>
                   );
                 })}
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Id Card
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
                   <img
-                    src={selectedUser.idCard}
+                    src={singleUser?.data?.idCard}
                     alt="ID Card"
                     className="w-full max-w-xs h-24 object-cover rounded border"
                   />

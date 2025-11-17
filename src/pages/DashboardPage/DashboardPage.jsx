@@ -3,7 +3,6 @@
 import { useState } from "react";
 import dayjs from "dayjs";
 
-
 import Stats from "../../component/DashboardPage/Stats";
 import Graph from "../../component/DashboardPage/Graph";
 import RecentJoin from "../../component/DashboardPage/RecentJoin";
@@ -14,10 +13,13 @@ function DashboardPage() {
   const startYear = 1900;
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [isOpen, setIsOpen] = useState(false);
-const {data:stats}=useGetStatsQuery(undefined)
-  console.log("stats------->",stats); 
-  const summary = stats?.data?.summary
-  const ownerOverview = stats?.data?.ownerOverview
+  const [ownerYear, setOwnerYear] = useState("2024");
+  const [earningYear, setEarningYear] = useState("2024");
+  const year = ownerYear;
+  const { data: stats } = useGetStatsQuery(year);
+  console.log("stats------->", stats);
+  const summary = stats?.data?.summary;
+  const ownerOverview = stats?.data?.ownerOverview;
 
   const years = Array.from(
     { length: currentYear - startYear + 1 },
@@ -31,13 +33,16 @@ const {data:stats}=useGetStatsQuery(undefined)
 
   return (
     <div className=" container mx-auto font-title mb-5">
-    
-
       {/* main content */}
-      <Stats summary={summary}/>
-  <Graph ownerOverview={ownerOverview}/>
-  <RecentJoin/>
- 
+      <Stats summary={summary} />
+      <Graph
+        ownerOverview={ownerOverview}
+        setOwnerYear={setOwnerYear}
+        setEarningYear={setEarningYear}  
+        earningYear={earningYear}
+        ownerYear={ownerYear}
+      />
+      <RecentJoin />
     </div>
   );
 }

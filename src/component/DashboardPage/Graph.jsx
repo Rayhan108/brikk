@@ -1,23 +1,8 @@
-"use client"
 
-import { useState } from "react"
 import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts"
 
 // Sample data for Total Owner Overview (Area Chart)
-const ownerData = [
-  { month: "Jan", value: 85 },
-  { month: "Feb", value: 75 },
-  { month: "Mar", value: 82 },
-  { month: "Apr", value: 40 },
-  { month: "May", value: 78 },
-  { month: "Jun", value: 80 },
-  { month: "Jul", value: 70 },
-  { month: "Aug", value: 95 },
-  { month: "Sep", value: 75 },
-  { month: "Oct", value: 100 },
-  { month: "Nov", value: 85 },
-  { month: "Dec", value: 100 },
-]
+
 
 // Sample data for Earning Overview (Bar Chart)
 const earningData = [
@@ -35,11 +20,15 @@ const earningData = [
   { month: "Dec", value: 85 },
 ]
 
-export default function Graph({ownerOverview}) {
-  console.log("ownerOverview--------->",ownerOverview);
-  const [ownerYear, setOwnerYear] = useState("2024")
-  const [earningYear, setEarningYear] = useState("2024")
-
+export default function Graph({ownerOverview,setOwnerYear,setEarningYear,ownerYear,earningYear}) {
+  console.log("ownerOverview--------->",ownerOverview?.monthlyOverview);
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 2000 + 1 }, (_, index) => 2000 + index);
+  // Directly mapping over ownerOverview?.monthlyOverview to get the data
+  const ownerData = ownerOverview?.monthlyOverview?.map((monthData) => ({
+    month: monthData.month.slice(0, 3), // First 3 letters of the month (e.g., Jan, Feb)
+    value: monthData.growthPercentage, // Use the growthPercentage value
+  })) || [];
   return (
     <div className="  p-6">
       <div className="max-w-7xl mx-auto">
@@ -50,19 +39,19 @@ export default function Graph({ownerOverview}) {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-gray-900">Total Owner Overview</h2>
-                  <div className="flex items-center gap-4 mt-2">
+                  {/* <div className="flex items-center gap-4 mt-2">
                     <span className="text-sm text-gray-600">Monthly Growth</span>
                     <span className="text-lg font-semibold text-gray-900">35.80%</span>
-                  </div>
+                  </div> */}
                 </div>
                 <select
                   value={ownerYear}
                   onChange={(e) => setOwnerYear(e.target.value)}
                   className="w-20 text-[#0F0B18]  h-8 text-sm border border-gray-300 rounded-md"
                 >
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
+                      {years.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -104,9 +93,9 @@ export default function Graph({ownerOverview}) {
                   onChange={(e) => setEarningYear(e.target.value)}
                   className="w-20 h-8 text-[#0F0B18] text-sm border border-gray-300 rounded-md"
                 >
-                  <option value="2024">2024</option>
-                  <option value="2023">2023</option>
-                  <option value="2022">2022</option>
+                         {years.map(year => (
+                    <option key={year} value={year}>{year}</option>
+                  ))}
                 </select>
               </div>
             </div>
