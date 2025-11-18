@@ -67,7 +67,7 @@ console.log("all booking----->",allBooking?.data);
       key: "owner",
       render: (text, record) => (
         <div className="flex items-center gap-2">
-          <Avatar src={record.profilePicture} size={40} />
+          <Avatar src={record.ownerProfilePicture} size={40} />
           <span>{text}</span>
         </div>
       ),
@@ -78,7 +78,7 @@ console.log("all booking----->",allBooking?.data);
       key: "provider",
       render: (text, record) => (
         <div className="flex items-center gap-2">
-          <Avatar src={record.profilePicture} size={40} />
+          <Avatar src={record.providerProfilePicture} size={40} />
           <span>{text}</span>
         </div>
       ),
