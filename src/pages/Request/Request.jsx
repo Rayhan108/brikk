@@ -98,7 +98,7 @@ console.log("all booking----->",allBooking?.data);
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (text) => <b>{text}</b>,
+      render: (text) => <b>${text}</b>,
     },
     {
       title: "Status",

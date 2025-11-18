@@ -1,8 +1,9 @@
 import { useState } from "react";
 import user1 from '../../assets/user1.jpg';
 import user3 from '../../assets/user3.jpg';
-import { Avatar, Button, ConfigProvider, Input, Modal, Pagination, Table } from "antd";
+import { Avatar, Button, ConfigProvider, Input, Modal, Pagination, Table, Tag } from "antd";
 import { Expand, Search, UserX } from "lucide-react";
+import { useGetAllTransectionsQuery } from "../../redux/feature/userManagement/userManagementApi";
 
 const data =[
   {
@@ -123,10 +124,27 @@ const TransactionHistory = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [page, setPage] = useState(1);
   const pageSize = 10;
 
-  const handlePageChange = (page) => setCurrentPage(page);
+const {data:allTransaction}=useGetAllTransectionsQuery({limit:pageSize,page})
+console.log("all transection--->",allTransaction);
+
+  // Handle page change
+  const onPageChange = (page) => {
+    setPage(page);
+  };
+  const filteredUsers = allTransaction?.data?.transactions?.filter((user) => {
+    // Ensure that user.name and user.email are defined before calling toLowerCase
+    const searchMatch =
+      (user.ownerName || user.providerName &&
+        user.ownerName.toLowerCase().includes(searchText.toLowerCase())) ||
+        user.providerName.toLowerCase().includes(searchText.toLowerCase()) ||
+      (user.ownerEmail || user?.providerEmail &&
+        user.email.toLowerCase().includes(searchText.toLowerCase()));
+
+    return searchMatch;
+  });
 
 
 
@@ -137,62 +155,91 @@ const TransactionHistory = () => {
 
 
 
-  const paginatedUsers = users.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
 
-  const filteredUsers = paginatedUsers.filter((u) =>
-    u?.Owner?.toLowerCase().includes(searchText.toLowerCase())
-  );
 
-  const columns = [
-    {
-      title: "#",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) =>
-        (currentPage - 1) * pageSize + index + 1,
-    },
+ const columns = [
+    // {
+    //   title: "#",
+    //   dataIndex: "id",
+    //   key: "id",
+
+    // },
     {
       title: "Owner",
-      dataIndex: "Owner",
-      key: "Owner",
-      render: (owner, record) => (
+      dataIndex: "ownerName",
+      key: "owner",
+      render: (text, record) => (
         <div className="flex items-center gap-2">
-          <Avatar src={record['OwnerImage']} size={40} />
-          <span>{owner}</span>
+          <Avatar src={record.ownerProfilePicture} size={40} />
+          <span>{text}</span>
         </div>
       ),
     },
     {
       title: "Provider",
-      dataIndex: "Provider",
-      key: "Provider",
-      render: (provider, record) => (
+      dataIndex: "providerName",
+      key: "provider",
+      render: (text, record) => (
         <div className="flex items-center gap-2">
-          <Avatar src={record['ProviderImage']} size={40} />
-          <span>{provider}</span>
+          <Avatar src={record.providerProfilePicture} size={40} />
+          <span>{text}</span>
         </div>
       ),
     },
     {
       title: "Booking Date",
-      dataIndex: "Date",
-      key: "Date",
+      dataIndex: "createdAt",
+      key: "bookingDate",
+      render:(text)=>(<div><p>{text?.split('T')[0]}</p></div>)
     },
     {
-      title: "Transaction No",
-      dataIndex: "Transaction No",
-      key: "Transaction No",
+      title: "Type",
+      dataIndex: "transactionType",
+      key: "category",
+    },
+    {
+      title: "Tnxld",
+      dataIndex: "transactionId",
+      key: "category",
     },
     {
       title: "Amount",
-      dataIndex: "Amount",
-      key: "Amount",
-      render: (text) => <b>{text}</b>,
+      dataIndex: "amount",
+      key: "amount",
+      render: (text) => <b>${text}</b>,
     },
-
+    {
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+      render: (status) => (
+        <Tag
+          color={
+            status === "COMPLETED"
+              ? "green"
+              : status === "CANCELLED"
+              ? "red"
+              : "orange"
+          }
+          className="px-3 py-1 rounded font-medium border-0"
+        >
+          {status}
+        </Tag>
+      ),
+    },
+    // {
+    //   title: "Overview",
+    //   key: "actions",
+    //   render: (_, record) => (
+    //     <div>
+    //       <Button
+    //         type="text"
+    //         icon={<Expand className="w-4 h-4" />}
+    //         onClick={() => handleOverviewClick(record)}
+    //       />
+    //     </div>
+    //   ),
+    // },
   ];
   
 
@@ -247,16 +294,15 @@ const TransactionHistory = () => {
       />
       </ConfigProvider>
 
-      <div className="flex justify-center items-center">
-        <Pagination
-          current={currentPage}
-          total={users.length}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-          showSizeChanger={false}
-          className="my-4"
-        />
-      </div>
+       <div className="flex justify-center items-center">
+            <Pagination
+              current={page}
+              total={allTransaction?.data?.pagination?.total}
+              pageSize={pageSize}
+              onChange={onPageChange}
+              showSizeChanger={false}
+            />
+          </div>
 
       {/* Overview Modal */}
       <Modal
