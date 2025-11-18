@@ -60,7 +60,7 @@ const filteredUsers = (activeTab === "Owner" ? allOwners?.data : allProviders?.d
       title: "Date",
       dataIndex: "createdAt",
       key: "date",
-      render: (text) => <span className="text-gray-600">{text}</span>,
+      render: (text) => new Date(text).toLocaleDateString(),
     },
     {
       title: "Phone No",

@@ -16,6 +16,13 @@ const userManagementApi = baseApi.injectEndpoints({
         params: { page,limit },
       }),
     }),
+    getAllBooking: builder.query({
+      query: ({page,limit}) => ({
+        url: "/admin/bookings",
+        method: "GET",
+        params: { page,limit },
+      }),
+    }),
     searchUsers: builder.query({
       query: (searchTerm) => ({
         url: "/admin/search",
@@ -44,5 +51,6 @@ export const {
   useGetAllProvidersQuery,
   useSingleUsersQuery,
   useSearchUsersQuery,
-  useBlockUsersMutation
+  useBlockUsersMutation,
+  useGetAllBookingQuery
 } = userManagementApi;

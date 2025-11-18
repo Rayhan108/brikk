@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Table, Button, Avatar, Modal, Tag, Pagination, Input, ConfigProvider, } from 'antd';
 import { Expand, Search, UserX } from 'lucide-react'; 
-import { useGetAllProvidersQuery, useSingleUsersQuery } from '../../redux/feature/userManagement/userManagementApi';
+import { useBlockUsersMutation, useGetAllProvidersQuery, useSingleUsersQuery } from '../../redux/feature/userManagement/userManagementApi';
+import toast from 'react-hot-toast';
 
 
 
@@ -11,8 +12,8 @@ const AllProvider = () => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [blockModalVisible, setBlockModalVisible] = useState(false);
+const [blockUser]=useBlockUsersMutation()
 
-  const pageSize = 10;
     const [page, setPage] = useState(1);
     const [id, setId] = useState("");
     const dataLimit = 10;
@@ -60,11 +61,25 @@ const filteredUsers = (allOwners?.data)?.filter((user) => {
     setBlockModalVisible(false);
   
   };
-
-  const handleBlockUser = () => {
+// block user method
+  const handleBlockUser = async() => {
+    const data={isActive:false}
+    try {
+     const res = await blockUser({data,id})
+console.log("response---->",res);
+if(res?.data?.success){
+  toast.success(res?.data?.message)
+}else{
+  toast.error(res?.data?.message)
+} 
+    } catch (error) {
+     console.log("Error",error);
+     toast?.error(error?.message) 
+    }
 
     setBlockModalVisible(false);
   };
+;
 
 
 
@@ -90,7 +105,7 @@ const filteredUsers = (allOwners?.data)?.filter((user) => {
       title: "Date",
       dataIndex: "createdAt",
       key: "date",
-      render: (text) => <span className="text-gray-600">{text}</span>,
+      render: (text) => <span className="text-gray-600">{text?.split('T')[0]}</span>,
     },
     {
       title: "Phone No",

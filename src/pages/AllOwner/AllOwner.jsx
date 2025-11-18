@@ -1,86 +1,88 @@
-import React, { useState } from 'react';
-import { Table, Button, Avatar, Modal, Tag, Pagination, Input, ConfigProvider, } from 'antd';
-import { Expand, Search, UserX } from 'lucide-react'; 
+import React, { useState } from "react";
+import {
+  Table,
+  Button,
+  Avatar,
+  Modal,
+  Tag,
+  Pagination,
+  Input,
+  ConfigProvider,
+} from "antd";
+import { Expand, Search, UserX } from "lucide-react";
 
-import { useBlockUsersMutation, useGetAllOwnersQuery, useSingleUsersQuery } from '../../redux/feature/userManagement/userManagementApi';
-import toast from 'react-hot-toast';
-
+import {
+  useBlockUsersMutation,
+  useGetAllOwnersQuery,
+  useSingleUsersQuery,
+} from "../../redux/feature/userManagement/userManagementApi";
+import toast from "react-hot-toast";
 
 const AllOwner = () => {
-
-    const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState("");
 
   const [modalVisible, setModalVisible] = useState(false);
   const [blockModalVisible, setBlockModalVisible] = useState(false);
 
   const pageSize = 10;
-    const [page, setPage] = useState(1);
-    const [id, setId] = useState("");
-    const dataLimit = 10;
+  const [page, setPage] = useState(1);
+  const [id, setId] = useState("");
+  const dataLimit = 10;
   const { data: allOwners } = useGetAllOwnersQuery({ limit: dataLimit, page });
   const handlePageChange = (page) => {
     setPage(page);
   };
-const { data: singleUser } = useSingleUsersQuery(id, {skip: !id,});
-const [blockUser]=useBlockUsersMutation()
-//   const { data: searchData } = useSearchUsersQuery(searchTerm);
-// console.log("search users----->",searchData);
-console.log("single users----->",singleUser);
-const filteredUsers = (allOwners?.data)?.filter((user) => {
-  // Ensure that user.name and user.email are defined before calling toLowerCase
-  const searchMatch =
-    (user.name && user.name.toLowerCase().includes(searchText.toLowerCase())) ||
-    (user.email && user.email.toLowerCase().includes(searchText.toLowerCase()));
+  const { data: singleUser } = useSingleUsersQuery(id, { skip: !id });
+  const [blockUser] = useBlockUsersMutation();
+  //   const { data: searchData } = useSearchUsersQuery(searchTerm);
+  // console.log("search users----->",searchData);
+  console.log("single users----->", singleUser);
+  const filteredUsers = allOwners?.data?.filter((user) => {
+    // Ensure that user.name and user.email are defined before calling toLowerCase
+    const searchMatch =
+      (user.name &&
+        user.name.toLowerCase().includes(searchText.toLowerCase())) ||
+      (user.email &&
+        user.email.toLowerCase().includes(searchText.toLowerCase()));
 
-  return searchMatch;
-});
-
-
-
-
-
-
-
+    return searchMatch;
+  });
 
   const handleOverviewClick = (user) => {
-  setId(user?._id)
+    setId(user?._id);
     setModalVisible(true);
   };
 
   const handleBlockClick = (user) => {
-     setId(user?._id)
+    setId(user?._id);
     setBlockModalVisible(true);
   };
 
   const handleCloseModal = () => {
     setModalVisible(false);
-
   };
 
   const handleBlockCloseModal = () => {
     setBlockModalVisible(false);
-  
   };
-// block user method
-  const handleBlockUser = async() => {
-    const data={isActive:false}
+  // block user method
+  const handleBlockUser = async () => {
+    const data = { isActive: false };
     try {
-     const res = await blockUser({data,id})
-console.log("response---->",res);
-if(res?.data?.success){
-  toast.success(res?.data?.message)
-}else{
-  toast.error(res?.data?.message)
-} 
+      const res = await blockUser({ data, id });
+      console.log("response---->", res);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      } else {
+        toast.error(res?.data?.message);
+      }
     } catch (error) {
-     console.log("Error",error);
-     toast?.error(error?.message) 
+      console.log("Error", error);
+      toast?.error(error?.message);
     }
 
     setBlockModalVisible(false);
   };
-
-
 
   const columns = [
     {
@@ -104,7 +106,7 @@ if(res?.data?.success){
       title: "Date",
       dataIndex: "createdAt",
       key: "date",
-      render: (text) => <span className="text-gray-600">{text}</span>,
+           render: (text) => <span className="text-gray-600">{text?.split('T')[0]}</span>,
     },
     {
       title: "Phone No",
@@ -158,22 +160,23 @@ if(res?.data?.success){
 
   return (
     <div>
-           <div className="flex items-center justify-between py-5">
-              <div className="flex items-center gap-6">
-                <h1 className="text-2xl font-semibold text-gray-900">All Owner Details</h1>
-            
-              </div>
-              <div className="relative">
-                <Input
-                  placeholder="Search"
-                  prefix={<Search className="w-4 h-4 text-gray-400" />}
-                  value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
-                  className="w-64"
-                />
-              </div>
-            </div>
-                <ConfigProvider
+      <div className="flex items-center justify-between py-5">
+        <div className="flex items-center gap-6">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            All Owner Details
+          </h1>
+        </div>
+        <div className="relative">
+          <Input
+            placeholder="Search"
+            prefix={<Search className="w-4 h-4 text-gray-400" />}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            className="w-64"
+          />
+        </div>
+      </div>
+      <ConfigProvider
         theme={{
           components: {
             InputNumber: {
@@ -196,76 +199,83 @@ if(res?.data?.success){
           },
         }}
       >
-
-      <Table
-        columns={columns}
-        dataSource={filteredUsers}
-        pagination={false}
-        rowClassName={(record, index) => (index % 2 === 0 ? "bg-white" : "bg-gray-50")}
-      />
+        <Table
+          columns={columns}
+          dataSource={filteredUsers}
+          pagination={false}
+          rowClassName={(record, index) =>
+            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+          }
+        />
       </ConfigProvider>
 
       {/* Pagination */}
-          <div className="flex justify-center items-center">
-            <Pagination
-              current={page}
-              total={allOwners?.meta?.total}
-              pageSize={dataLimit}
-              onChange={handlePageChange}
-              showSizeChanger={false}
-            />
-          </div>
+      <div className="flex justify-center items-center">
+        <Pagination
+          current={page}
+          total={allOwners?.meta?.total}
+          pageSize={dataLimit}
+          onChange={handlePageChange}
+          showSizeChanger={false}
+        />
+      </div>
 
       {/* User Overview Modal */}
-     <Modal
-         title="User Overview"
-         visible={modalVisible}
-         onCancel={handleCloseModal}
-         footer={[<Button key="back" onClick={handleCloseModal}>Close</Button>]}
-       >
-         {singleUser && (
-           <div className="pb-6">
-             <div className="flex justify-center py-5 shadow-2xl">
-               <img
-                 src={singleUser?.data?.profilePicture}
-                 alt={singleUser?.data?.userName}
-                 className="w-20 h-20 rounded-full object-cover"
-               />
-             </div>
- 
-             <div className="bg-gray-100 w-full">
-               <div className="space-y-4 px-5 py-5">
-                 {Object.keys(singleUser?.data)?.map((key) => {
-                   if (key === "_id") return null;
-                   if (key === "NIDFront") return null;
-                   if (key === "createdAt") return null;
-                   return (
-                     <div key={key}>
-                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                         {key.replace(/([A-Z])/g, " $1")}
-                       </label>
-                       <div className="text-gray-900">
-                         {typeof singleUser?.data?.[key] === "string"
-                           ? singleUser?.data?.[key]
-                           : JSON.stringify(singleUser?.data?.[key])}
-                       </div>
-                     </div>
-                   );
-                 })}
- 
-                 <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-1">Id Card</label>
-                   <img
-                     src={singleUser?.data?.NIDFront}
-                     alt="ID Card"
-                     className="w-full max-w-xs h-24 object-cover rounded border"
-                   />
-                 </div>
-               </div>
-             </div>
-           </div>
-         )}
-       </Modal>
+      <Modal
+        title="User Overview"
+        visible={modalVisible}
+        onCancel={handleCloseModal}
+        footer={[
+          <Button key="back" onClick={handleCloseModal}>
+            Close
+          </Button>,
+        ]}
+      >
+        {singleUser && (
+          <div className="pb-6">
+            <div className="flex justify-center py-5 shadow-2xl">
+              <img
+                src={singleUser?.data?.profilePicture}
+                alt={singleUser?.data?.userName}
+                className="w-20 h-20 rounded-full object-cover"
+              />
+            </div>
+
+            <div className="bg-gray-100 w-full">
+              <div className="space-y-4 px-5 py-5">
+                {Object.keys(singleUser?.data)?.map((key) => {
+                  if (key === "_id") return null;
+                  if (key === "NIDFront") return null;
+                  if (key === "createdAt") return null;
+                  return (
+                    <div key={key}>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        {key.replace(/([A-Z])/g, " $1")}
+                      </label>
+                      <div className="text-gray-900">
+                        {typeof singleUser?.data?.[key] === "string"
+                          ? singleUser?.data?.[key]
+                          : JSON.stringify(singleUser?.data?.[key])}
+                      </div>
+                    </div>
+                  );
+                })}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Id Card
+                  </label>
+                  <img
+                    src={singleUser?.data?.NIDFront}
+                    alt="ID Card"
+                    className="w-full max-w-xs h-24 object-cover rounded border"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </Modal>
 
       {/* Block User Modal */}
       <Modal
