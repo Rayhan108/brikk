@@ -7,8 +7,15 @@ import cleaningImg from "../../assets/cleaning.jpg";
 import laundryImg from "../../assets/laundry.jpg";
 import handymanImg from "../../assets/handyman.jpg";
 import electricalImg from "../../assets/electrician.jpg";
+import { useAllCategoryQuery } from "../../redux/feature/others/othersApi";
+import AddCategory from "./AddCategory";
 
 const AllCategory = () => {
+  const [page,setPage]=useState(1)
+  const limit=10
+  const {data:allCategory,refetch}=useAllCategoryQuery({limit,page})
+
+  console.log("all category--------->",allCategory);
   const [categories, setCategories] = useState([
     { id: 1, name: "Cleaning", image: cleaningImg },
     { id: 2, name: "Laundry", image: laundryImg },
@@ -57,17 +64,17 @@ const AllCategory = () => {
 
       {/* Category Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-        {categories.map((cat) => (
+        {allCategory?.data?.map((cat) => (
           <div
-            key={cat.id}
+            key={cat?._id}
             className="rounded-xl overflow-hidden shadow hover:shadow-lg transition bg-white"
           >
             <img
-              src={cat.image}
-              alt={cat.name}
+              src={cat?.image}
+              alt={cat?.name}
               className="w-full h-32 object-cover"
             />
-            <div className="p-3 text-center font-medium text-[#0F0B18]">{cat.name}</div>
+            <div className="p-3 text-center font-medium text-[#0F0B18]">{cat?.name}</div>
           </div>
         ))}
       </div>
@@ -82,56 +89,9 @@ const AllCategory = () => {
   centered
   width={500}
 >
-  <div className="space-y-6">
-    {/* Category Name */}
-    <div>
-      <label className="block mb-2 text-lg font-medium text-gray-700">Category Name</label>
-      <Input
-        placeholder="Enter category name"
-        value={categoryName}
-        onChange={(e) => setCategoryName(e.target.value)}
-        className="w-full shadow-md rounded-lg border-2 border-gray-300 p-3 focus:ring-2 focus:ring-blue-500"
-      />
-    </div>
-
-    {/* Upload Image */}
-    <div> 
-      <label className="block mb-2 text-lg font-medium text-gray-700">Upload Image</label>
-      <Upload
-        accept="image/*"
-        showUploadList={false}
-        beforeUpload={() => false}
-        customRequest={handleUpload}
-      >
-        <div className="w-full border-dashed border-2 border-gray-300 rounded-lg p-6 flex  cursor-pointer hover:border-blue-500 transition-all">
-          {image ? (
-            <img
-              src={image}
-              alt="preview"
-              className="w-full h-40 object-cover rounded-lg shadow-lg"
-            />
-          ) : (
-            <div className="flex flex-col items-center text-gray-500">
-              <PlusOutlined className="text-3xl mb-2" />
-              <span className="text-sm">Upload Image</span>
-            </div>
-          )}
+    <div className="max-w-md mx-auto p-6 bg-white rounded-lg ">
+          <AddCategory setModalOpen={setModalOpen}  refetch={refetch} />
         </div>
-      </Upload>
-    </div>
-
-    {/* Action Buttons */}
-    <div className="flex justify-center gap-3">
-
-      <Button
-        type="primary"
-        onClick={handleSave}
-        className="bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 text-white"
-      >
-        Confirm
-      </Button>
-    </div>
-  </div>
 </Modal>
 
     </div>

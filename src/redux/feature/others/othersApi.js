@@ -4,22 +4,37 @@ const othersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getStats: builder.query({
       query: (year) => ({
-        url:"/admin/statistics",
+        url: "/admin/statistics",
         method: "GET",
-params:{year}
+        params: { year },
       }),
     }),
     recentJoinUsers: builder.query({
       query: () => ({
-        url:"/admin/recent-users",
+        url: "/admin/recent-users",
         method: "GET",
-
       }),
     }),
-
-  
-
+    allCategory: builder.query({
+      query: ({ limit, page }) => ({
+        url: "/admin/categories",
+        method: "GET",
+        params: { page, limit },
+      }),
+    }),
+    createCategory: builder.mutation({
+      query: (formData) => ({
+        url: "/admin/categories",
+        method: "POST",
+        body: formData,
+      }),
+    }),
   }),
 });
 
-export const { useGetStatsQuery,useRecentJoinUsersQuery} = othersApi;
+export const {
+  useGetStatsQuery,
+  useRecentJoinUsersQuery,
+  useAllCategoryQuery,
+  useCreateCategoryMutation,
+} = othersApi;
