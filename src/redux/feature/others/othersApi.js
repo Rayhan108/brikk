@@ -22,6 +22,13 @@ const othersApi = baseApi.injectEndpoints({
         params: { page, limit },
       }),
     }),
+    paymentTracking: builder.query({
+      query: ({ limit, page }) => ({
+        url: "/transactions/payment-tracking",
+        method: "GET",
+        params: { page, limit },
+      }),
+    }),
     createCategory: builder.mutation({
       query: (formData) => ({
         url: "/admin/categories",
@@ -37,4 +44,5 @@ export const {
   useRecentJoinUsersQuery,
   useAllCategoryQuery,
   useCreateCategoryMutation,
+  usePaymentTrackingQuery
 } = othersApi;

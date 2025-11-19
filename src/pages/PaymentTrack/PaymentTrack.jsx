@@ -1,5 +1,5 @@
 import { useState } from "react";
-import user1 from "../../assets/user1.jpg";
+
 import {
   Avatar,
   Button,
@@ -10,63 +10,46 @@ import {
   Pagination,
   Table,
 } from "antd";
-import { Search, Calendar as CalendarIcon } from "lucide-react";
+// import {  Calendar as CalendarIcon } from "lucide-react";
 import dayjs from "dayjs";
+import { usePaymentTrackingQuery } from "../../redux/feature/others/othersApi";
 
-const data = Array.from({ length: 12 }).map((_, i) => ({
-  key: i + 1,
-  Provider: "Jacob",
-  Date: "20/07/2025 - 5:15 PM",
-  Package: "Pro Plan",
-  Email: "jacob@gmail.com",
-  Phone: "+880 1840-506014",
-  TransactionNo: "#2566627KEE",
-  Commission: "%5",
-  ProviderImage: user1,
-}));
+
 
 const PaymentTrack = () => {
-  const [users, setUsers] = useState(data);
-  const [searchText, setSearchText] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
+
+
+
+  const [page,setPage]=useState(1)
   const pageSize = 10;
   const [fromDate, setFromDate] = useState(dayjs("2025-06-16"));
   const [toDate, setToDate] = useState(dayjs("2025-09-10"));
   const [activeRange, setActiveRange] = useState("Custom Range");
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
+const {data:transactions}=usePaymentTrackingQuery({limit:pageSize,page})
+console.log("all payments--------->",transactions);
 
-  const handlePageChange = (page) => setCurrentPage(page);
+  const handlePageChange = (page) => setPage(page);
 
-  const paginatedUsers = users.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
 
-  const filteredUsers = paginatedUsers.filter((u) =>
-    u?.Provider?.toLowerCase().includes(searchText.toLowerCase())
-  );
+
 
   const columns = [
-    {
-      title: "#",
-      dataIndex: "id",
-      key: "id",
-      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
-    },
+
     {
       title: "Provider",
       dataIndex: "Provider",
       key: "Provider",
       render: (provider, record) => (
         <div className="flex items-center gap-2">
-          <Avatar src={record.ProviderImage} size={40} />
+          <Avatar src={record.providerProfilePicture} size={40} />
           <span>{provider}</span>
         </div>
       ),
     },
     {
       title: "Date",
-      dataIndex: "Date",
+      dataIndex: "createdAt",
       key: "Date",
     },
     {
@@ -77,22 +60,22 @@ const PaymentTrack = () => {
     },
     {
       title: "Email",
-      dataIndex: "Email",
+      dataIndex: "providerEmail",
       key: "Email",
     },
     {
       title: "Phone Number",
-      dataIndex: "Phone",
+      dataIndex: "providerPhoneNumber",
       key: "Phone",
     },
     {
       title: "Transaction No",
-      dataIndex: "TransactionNo",
+      dataIndex: "transactionId",
       key: "TransactionNo",
     },
     {
       title: "Commission",
-      dataIndex: "Commission",
+      dataIndex: "amount",
       key: "Commission",
       render: (text) => <span className="font-semibold">{text}</span>,
     },
@@ -105,7 +88,7 @@ const PaymentTrack = () => {
         <h1 className="text-2xl font-semibold text-gray-900">
           Payment & Commission Tracking
         </h1>
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
           <Button
             type="default"
             className="flex items-center gap-2 border rounded px-3 py-1"
@@ -114,7 +97,7 @@ const PaymentTrack = () => {
             <CalendarIcon className="w-4 h-4" />
             <span>16 June to 10 Sep 2025</span>
           </Button>
-        </div>
+        </div> */}
       </div>
       <ConfigProvider
         theme={{
@@ -142,7 +125,7 @@ const PaymentTrack = () => {
         {/* Table */}
         <Table
           columns={columns}
-          dataSource={filteredUsers}
+          dataSource={transactions?.data?.transactions}
           pagination={false}
           rowKey="key"
           bordered={false}
@@ -161,8 +144,8 @@ const PaymentTrack = () => {
       {/* Pagination */}
       <div className="flex justify-center items-center">
         <Pagination
-          current={currentPage}
-          total={users.length}
+          current={page}
+          total={transactions?.data?.pagination?.total}
           pageSize={pageSize}
           onChange={handlePageChange}
           showSizeChanger={false}
