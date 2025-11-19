@@ -1,24 +1,12 @@
 
 import { useState } from "react"
-import { Search, CalendarIcon, Star, ChevronDown } from "lucide-react"
-import user1 from '../../assets/user1.jpg';
-import user2 from '../../assets/user2.jpg';
+import { Search, CalendarIcon, Star } from "lucide-react"
+
 import { Table, Pagination, Select, Button, Modal, Input, Calendar, ConfigProvider } from "antd"
 import dayjs from "dayjs";
+import { useGetSuspentionsQuery, useSuspenseStatusChangeMutation } from "../../redux/feature/others/othersApi";
+import toast from "react-hot-toast";
 
-const data = Array.from({ length: 12 }).map((_, i) => ({
-  id: i + 1,
-  owner: "Jacob",
-  provider: "Michal",
-  date: "12/7/2025-12:50 am",
-  ownerEmail: "jacob@gmail.com",
-  providerEmail: "michal@gmail.com",
-  service: "Cleaning",
-  rating: 2.5,
-  status: i % 3 === 0 ? "Suspended" : "Active",
-  ownerImage: user1,
-  providerImage: user2,
-}))
 
 const StarRating = ({ rating }) => {
   return (
@@ -39,58 +27,69 @@ const StarRating = ({ rating }) => {
 }
 
 const AccountSuspention = () => {
-  const [users, setUsers] = useState(data)
+const [changeStatus]=useSuspenseStatusChangeMutation()
   const [searchText, setSearchText] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
+  const [page, setPage] = useState(1)
   const pageSize = 10
     const [fromDate, setFromDate] = useState(dayjs("2025-06-16"));
     const [toDate, setToDate] = useState(dayjs("2025-09-10"));
-  const [calendarOpen, setCalendarOpen] = useState(false)
+
     const [activeRange, setActiveRange] = useState("Custom Range");
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
-  const handlePageChange = (page) => setCurrentPage(page)
+const {data:allSuspention}=useGetSuspentionsQuery({page,limit:pageSize})
+console.log("all suspention---------->",allSuspention);
+  const handlePageChange = (page) => setPage(page)
 
-  const filteredUsers = users.filter(
-    (u) =>
-      u?.owner?.toLowerCase().includes(searchText.toLowerCase()) ||
-      u?.provider?.toLowerCase().includes(searchText.toLowerCase()),
-  )
 
-  const handleStatusChange = (id, newStatus) => {
-    setUsers(users.map((user) => (user.id === id ? { ...user, status: newStatus } : user)))
+
+  const handleStatusChange = async(value) => {
+     const data = { isActive: false };
+     const id=value?._id
+    try {
+      const res = await changeStatus({ data, id });
+      console.log("response---->", res);
+      if (res?.data?.success) {
+        toast.success(res?.data?.message);
+      } else {
+        toast.error(res?.data?.message);
+      }
+    } catch (error) {
+      console.log("Error", error);
+      toast?.error(error?.message);
+    }
   }
 
-  const totalPages = Math.ceil(users.length / pageSize)
+
 
   const columns = [
     {
       title: "#",
       dataIndex: "id",
-      render: (text, record, index) => (currentPage - 1) * pageSize + index + 1,
+      render: (text, record, index) => (page - 1) * pageSize + index + 1,
     },
     {
       title: "Owner",
-      dataIndex: "owner",
+      dataIndex: "ownerUserName",
       render: (text, record) => (
         <div className="flex items-center gap-2">
-          <img src={record.ownerImage} alt="Owner" className="w-10 h-10 rounded-full" />
+          <img src={record.ownerProfilePicture} alt="Owner" className="w-10 h-10 rounded-full" />
           <span className="text-sm">{record.owner}</span>
         </div>
       ),
     },
     {
       title: "Provider",
-      dataIndex: "provider",
+      dataIndex: "providerUserName",
       render: (text, record) => (
         <div className="flex items-center gap-2">
-          <img src={record.providerImage} alt="Provider" className="w-10 h-10 rounded-full" />
+          <img src={record.providerProfilePicture} alt="Provider" className="w-10 h-10 rounded-full" />
           <span className="text-sm">{record.provider}</span>
         </div>
       ),
     },
     {
       title: "Date",
-      dataIndex: "date",
+      dataIndex: "bookingDate",
     },
     {
       title: "Owner-Email",
@@ -100,10 +99,10 @@ const AccountSuspention = () => {
       title: "Provider-Email",
       dataIndex: "providerEmail",
     },
-    {
-      title: "Service",
-      dataIndex: "service",
-    },
+    // {
+    //   title: "Service",
+    //   dataIndex: "providerAccountStatus",
+    // },
     {
       title: "Rating",
       dataIndex: "rating",
@@ -111,11 +110,12 @@ const AccountSuspention = () => {
     },
     {
       title: "Status",
-      dataIndex: "status",
+      dataIndex: "providerAccountStatus",
       render: (text, record) => (
         <Select
-          value={record.status}
-          onChange={(value) => handleStatusChange(record.id, value)}
+          value={record.providerAccountStatus
+}
+          onChange={(value) => handleStatusChange(value)}
           className={`w-32 text-sm ${record.status === "Suspended" ? "text-red-600" : "text-green-600"}`}
         >
           <Select.Option value="Active">Active</Select.Option>
@@ -142,14 +142,14 @@ const AccountSuspention = () => {
                               onChange={(e) => setSearchText(e.target.value)}
                               className="w-64"
                             />
-          <Button
+          {/* <Button
             type="default"
             className="flex items-center gap-2 border rounded px-3 py-1"
             onClick={() => setCalendarModalVisible(true)}
           >
             <CalendarIcon className="w-4 h-4" />
             <span>16 June to 10 Sep 2025</span>
-          </Button>
+          </Button> */}
         </div>
       </div>
       <ConfigProvider
@@ -180,7 +180,7 @@ const AccountSuspention = () => {
       {/* Table */}
       <Table
         columns={columns}
-        dataSource={filteredUsers}
+        dataSource={allSuspention?.data}
         pagination={false}
         rowKey="id"
         className="rounded-lg border overflow-hidden"
@@ -190,8 +190,8 @@ const AccountSuspention = () => {
       {/* Pagination */}
       <div className="flex justify-center items-center mt-6">
         <Pagination
-          current={currentPage}
-          total={users.length}
+          current={page}
+          total={allSuspention?.meta?.total}
           pageSize={pageSize}
           onChange={handlePageChange}
           showSizeChanger={false}

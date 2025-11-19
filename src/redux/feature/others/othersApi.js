@@ -29,11 +29,25 @@ const othersApi = baseApi.injectEndpoints({
         params: { page, limit },
       }),
     }),
+    getSuspentions: builder.query({
+      query: ({ limit, page }) => ({
+        url: "/admin/account-suspension",
+        method: "GET",
+        params: { page, limit },
+      }),
+    }),
     createCategory: builder.mutation({
       query: (formData) => ({
         url: "/admin/categories",
         method: "POST",
         body: formData,
+      }),
+    }),
+    suspenseStatusChange: builder.mutation({
+      query: ({data,id}) => ({
+        url:`/admin/users/status/${id}`,
+        method: "PATCH",
+        body: data,
       }),
     }),
   }),
@@ -44,5 +58,7 @@ export const {
   useRecentJoinUsersQuery,
   useAllCategoryQuery,
   useCreateCategoryMutation,
-  usePaymentTrackingQuery
+  usePaymentTrackingQuery,
+  useGetSuspentionsQuery,
+  useSuspenseStatusChangeMutation
 } = othersApi;
