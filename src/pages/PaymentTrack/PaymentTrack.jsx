@@ -14,28 +14,22 @@ import {
 import dayjs from "dayjs";
 import { usePaymentTrackingQuery } from "../../redux/feature/others/othersApi";
 
-
-
 const PaymentTrack = () => {
-
-
-
-  const [page,setPage]=useState(1)
+  const [page, setPage] = useState(1);
   const pageSize = 10;
   const [fromDate, setFromDate] = useState(dayjs("2025-06-16"));
   const [toDate, setToDate] = useState(dayjs("2025-09-10"));
   const [activeRange, setActiveRange] = useState("Custom Range");
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
-const {data:transactions}=usePaymentTrackingQuery({limit:pageSize,page})
-console.log("all payments--------->",transactions);
+  const { data: transactions } = usePaymentTrackingQuery({
+    limit: pageSize,
+    page,
+  });
+  console.log("all payments--------->", transactions);
 
   const handlePageChange = (page) => setPage(page);
 
-
-
-
   const columns = [
-
     {
       title: "Provider",
       dataIndex: "Provider",
@@ -51,7 +45,7 @@ console.log("all payments--------->",transactions);
       title: "Date",
       dataIndex: "createdAt",
       key: "Date",
-         render: (text) => new Date(text).toLocaleDateString(),
+      render: (text) => new Date(text).toLocaleDateString(),
     },
     {
       title: "Package",

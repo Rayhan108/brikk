@@ -1,125 +1,13 @@
 import { useState } from "react";
-import user1 from '../../assets/user1.jpg';
-import user3 from '../../assets/user3.jpg';
+
 import { Avatar, Button, ConfigProvider, Input, Modal, Pagination, Table, Tag } from "antd";
 import { Expand, Search, UserX } from "lucide-react";
 import { useGetAllTransectionsQuery } from "../../redux/feature/userManagement/userManagementApi";
 
-const data =[
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-    "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-    "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-   "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-    "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-   "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-    "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-   "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-   "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-   "OwnerImage":user1,
-    "ProviderImage":user3
-  },
-  {
-    "Owner": "Jacob",
-    "Provider": "Michal",
-    "Date": "20/07/2025 - 5:15 PM",
-    "Owner-Email": "jacob@gmail.com",
-    "Provider-Email": "michal@gmail.com",
-    "Transaction No": "#2566627KEE",
-    "Amount": "€50",
-   "OwnerImage":user1,
-    "ProviderImage":user3
-  }
-]
+
 
 const TransactionHistory = () => {
-      const [users, setUsers] = useState(data);
+
   const [searchText, setSearchText] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -249,7 +137,7 @@ console.log("all transection--->",allTransaction);
         <h1 className="text-2xl font-semibold text-gray-900">
           Request Overview
         </h1>
-        <div className="relative">
+        {/* <div className="relative">
           <Input
             placeholder="Search"
             prefix={<Search className="w-4 h-4 text-gray-400" />}
@@ -257,7 +145,7 @@ console.log("all transection--->",allTransaction);
             onChange={(e) => setSearchText(e.target.value)}
             className="w-64"
           />
-        </div>
+        </div> */}
       </div>
     <ConfigProvider
         theme={{

@@ -140,7 +140,7 @@ console.log("all booking----->",allBooking?.data);
         <h1 className="text-2xl font-semibold text-gray-900">
           Request Overview
         </h1>
-        <div className="relative">
+        {/* <div className="relative">
           <Input
             placeholder="Search"
             prefix={<Search className="w-4 h-4 text-gray-400" />}
@@ -148,7 +148,7 @@ console.log("all booking----->",allBooking?.data);
             onChange={(e) => setSearchText(e.target.value)}
             className="w-64"
           />
-        </div>
+        </div> */}
       </div>
       <ConfigProvider
         theme={{
