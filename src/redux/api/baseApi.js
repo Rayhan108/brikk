@@ -2,8 +2,9 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 
 
 const baseQuery = fetchBaseQuery({
+    // baseUrl: "https://brickk-backend.onrender.com/api",
     baseUrl: "http://10.10.20.73:8000/api",
-    // credentials: "include",
+    credentials: "include",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState()).auth.token;
       console.log("token->",token);

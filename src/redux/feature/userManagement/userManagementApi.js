@@ -57,10 +57,30 @@ const userManagementApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+    myData: builder.query({
+      query: () => ({
+        url: `/auth/me`,
+        method: "GET",
+      }),
+    }),
     blockUsers: builder.mutation({
       query: ({data,id}) => ({
         url: `/admin/users/status/${id}`,
         method: "PATCH",
+        body:data
+      }),
+    }),
+    editProfile: builder.mutation({
+      query: ({data}) => ({
+        url: `/admin/edit-profile`,
+        method: "PUT",
+        body:data
+      }),
+    }),
+    changePass: builder.mutation({
+      query: (data) => ({
+        url: `/auth/change-password`,
+        method: "PUT",
         body:data
       }),
     }),
@@ -76,5 +96,5 @@ export const {
   useGetAllBookingQuery,
   useGetAllTransectionsQuery,
   useGetAllOwnersProfileQuery,
-  useGetAllProvidersProfileQuery
+  useGetAllProvidersProfileQuery,useEditProfileMutation,useChangePassMutation,useMyDataQuery
 } = userManagementApi;

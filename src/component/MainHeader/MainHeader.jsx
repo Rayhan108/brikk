@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import anita from "../../assets/user.png";
 import logo from "../../assets/logo.png";
+import { useMyDataQuery } from "../../redux/feature/userManagement/userManagementApi";
 
 const MainHeader = ({ toggleSidebar }) => {
   const navigate = useNavigate();
-
+  const { data: myData, refetch } = useMyDataQuery();
   return (
     <div className="relative font-title">
       <header className="bg-[#B9C2DB] shadow-sm">
@@ -20,12 +21,12 @@ const MainHeader = ({ toggleSidebar }) => {
             className="flex items-center gap-2 cursor-pointer px-5 py-2 rounded-2xl"
           >
             <img
-              src={anita}
+              src={myData?.data?.profilePicture}
               className="w-8 md:w-12 h-8 md:h-12 object-cover rounded-full"
               alt="User Avatar"
             />
             <div className="hidden md:block">
-              <h3 className="text-white text-lg font-semibold">Admin Morie</h3>
+              <h3 className="text-white text-lg font-semibold">{myData?.data?.userName}</h3>
             </div>
           </div>
 
