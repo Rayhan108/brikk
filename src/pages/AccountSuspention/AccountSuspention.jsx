@@ -42,9 +42,14 @@ console.log("all suspention---------->",allSuspention);
 
 
 
-  const handleStatusChange = async(value) => {
-     const data = { isActive: false };
-     const id=value?._id
+    // Updated handleStatusChange function
+  const handleStatusChange = async (status,record) => {
+    const value = status === "Active" ? true : false;  // Determine the status value based on selected option
+    const id = record?._id;
+
+    const data = { isActive: value };
+console.log("data-->",data);
+console.log("record-->",record);
     try {
       const res = await changeStatus({ data, id });
       console.log("response---->", res);
@@ -58,7 +63,6 @@ console.log("all suspention---------->",allSuspention);
       toast?.error(error?.message);
     }
   }
-
 
 
   const columns = [
@@ -90,6 +94,7 @@ console.log("all suspention---------->",allSuspention);
     {
       title: "Date",
       dataIndex: "bookingDate",
+         render: (text) => new Date(text).toLocaleDateString(),
     },
     {
       title: "Owner-Email",
@@ -115,7 +120,7 @@ console.log("all suspention---------->",allSuspention);
         <Select
           value={record.providerAccountStatus
 }
-          onChange={(value) => handleStatusChange(value)}
+             onChange={(status) => handleStatusChange(status, record)} 
           className={`w-32 text-sm ${record.status === "Suspended" ? "text-red-600" : "text-green-600"}`}
         >
           <Select.Option value="Active">Active</Select.Option>
@@ -133,7 +138,7 @@ console.log("all suspention---------->",allSuspention);
         <h1 className="text-2xl font-semibold text-gray-900">
    Account Suspention
         </h1>
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
                   
                             <Input
                               placeholder="Search"
@@ -142,15 +147,15 @@ console.log("all suspention---------->",allSuspention);
                               onChange={(e) => setSearchText(e.target.value)}
                               className="w-64"
                             />
-          {/* <Button
+          <Button
             type="default"
             className="flex items-center gap-2 border rounded px-3 py-1"
             onClick={() => setCalendarModalVisible(true)}
           >
             <CalendarIcon className="w-4 h-4" />
             <span>16 June to 10 Sep 2025</span>
-          </Button> */}
-        </div>
+          </Button>
+        </div> */}
       </div>
       <ConfigProvider
         theme={{

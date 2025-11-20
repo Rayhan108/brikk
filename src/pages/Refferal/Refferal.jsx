@@ -1,45 +1,34 @@
+import { useState } from "react";
+import { Search, CalendarIcon, Star, ChevronDown } from "lucide-react";
 
-import { useState } from "react"
-import { Search, CalendarIcon, Star, ChevronDown } from "lucide-react"
-import user1 from '../../assets/user1.jpg';
-import user2 from '../../assets/user2.jpg';
-import { Table, Pagination, Select, Button, Modal, Input, Calendar, ConfigProvider } from "antd"
+import {
+  Table,
+  Pagination,
+  Select,
+  Button,
+  Modal,
+  Input,
+  Calendar,
+  ConfigProvider,
+} from "antd";
 import dayjs from "dayjs";
-
-const data = Array.from({ length: 12 }).map((_, i) => ({
-  id: i + 1,
-  owner: "Jacob",
-  provider: "Michal",
-  date: "12/7/2025",
-  email: "jacob@gmail.com",
-  referedEmail: "michal@gmail.com",
-  role:'owner',
-  bonus:'$10 credit',
-  ownerImage: user1,
-  providerImage: user2,
-}))
-
-
+import { useGetRefferalQuery } from "../../redux/feature/others/othersApi";
 
 const Refferal = () => {
-  const [users, setUsers] = useState(data)
-  const [searchText, setSearchText] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10
-    const [fromDate, setFromDate] = useState(dayjs("2025-06-16"));
-    const [toDate, setToDate] = useState(dayjs("2025-09-10"));
-  const [calendarOpen, setCalendarOpen] = useState(false)
-    const [activeRange, setActiveRange] = useState("Custom Range");
+  // const [searchText, setSearchText] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
+  const [fromDate, setFromDate] = useState(dayjs("2025-06-16"));
+  const [toDate, setToDate] = useState(dayjs("2025-09-10"));
+
+  const [activeRange, setActiveRange] = useState("Custom Range");
   const [calendarModalVisible, setCalendarModalVisible] = useState(false);
-  const handlePageChange = (page) => setCurrentPage(page)
-
-  const filteredUsers = users.filter(
-    (u) =>
-      u?.owner?.toLowerCase().includes(searchText.toLowerCase()) ||
-      u?.provider?.toLowerCase().includes(searchText.toLowerCase()),
-  )
-
-
+  const { data: allReferal } = useGetRefferalQuery({
+    page: currentPage,
+    limit: pageSize,
+  });
+  console.log("all referral--->", allReferal);
+  const handlePageChange = (page) => setCurrentPage(page);
 
   const columns = [
     {
@@ -49,57 +38,65 @@ const Refferal = () => {
     },
     {
       title: "Owner",
-      dataIndex: "owner",
+      dataIndex: "Name",
+      key: "name",
       render: (text, record) => (
         <div className="flex items-center gap-2">
-          <img src={record.ownerImage} alt="Owner" className="w-10 h-10 rounded-full" />
-          <span className="text-sm">{record.owner}</span>
+          <img
+            src={record.refereeProfilePicture}
+            alt="Owner"
+            className="w-10 h-10 rounded-full"
+          />
+          <span className="text-sm">{text}</span>
         </div>
       ),
     },
     {
-      title: "Provider",
-      dataIndex: "provider",
+      title: "Reffered Name",
+      dataIndex: "ReferredName",
       render: (text, record) => (
         <div className="flex items-center gap-2">
-          <img src={record.providerImage} alt="Provider" className="w-10 h-10 rounded-full" />
-          <span className="text-sm">{record.provider}</span>
+          <img
+            src={record.referrerProfilePicture}
+            alt="Provider"
+            className="w-10 h-10 rounded-full"
+          />
+          <span className="text-sm">{record.ReferredName}</span>
         </div>
       ),
     },
     {
       title: "Date",
-      dataIndex: "date",
+      dataIndex: "createdAt",
+      render: (text) => new Date(text).toLocaleDateString(),
     },
     {
       title: "Email",
-      dataIndex: "email",
+      dataIndex: "Email",
     },
     {
       title: "Reffered Email",
-      dataIndex: "referedEmail",
+      dataIndex: "ReferredEmail",
     },
     {
       title: "Role",
-      dataIndex: "role",
+      dataIndex: "referrerRole",
     },
     {
       title: "Bonus",
-      dataIndex: "bonus",
-  
+      dataIndex: "creditsEarned",
     },
-  
-  ]
+  ];
 
   return (
     <div className="p-5 font-sans">
       {/* Header */}
-        {/* Header */}
+      {/* Header */}
       <div className="flex items-center justify-between py-5">
         <h1 className="text-2xl font-semibold text-gray-900">
-Referral Program Management
+          Referral Program Management
         </h1>
-        <div className="flex items-center gap-3">
+        {/* <div className="flex items-center gap-3">
                   
                             <Input
                               placeholder="Search"
@@ -116,7 +113,7 @@ Referral Program Management
             <CalendarIcon className="w-4 h-4" />
             <span>16 June to 10 Sep 2025</span>
           </Button>
-        </div>
+        </div> */}
       </div>
       <ConfigProvider
         theme={{
@@ -141,23 +138,21 @@ Referral Program Management
           },
         }}
       >
-
-
-      {/* Table */}
-      <Table
-        columns={columns}
-        dataSource={filteredUsers}
-        pagination={false}
-        rowKey="id"
-        className="rounded-lg border overflow-hidden"
-      />
+        {/* Table */}
+        <Table
+          columns={columns}
+          dataSource={allReferal?.data}
+          pagination={false}
+          rowKey="id"
+          className="rounded-lg border overflow-hidden"
+        />
       </ConfigProvider>
 
       {/* Pagination */}
       <div className="flex justify-center items-center mt-6">
         <Pagination
           current={currentPage}
-          total={users.length}
+          total={allReferal?.meta?.total}
           pageSize={pageSize}
           onChange={handlePageChange}
           showSizeChanger={false}
@@ -165,8 +160,7 @@ Referral Program Management
         />
       </div>
 
-
-            {/* Calendar Modal */}
+      {/* Calendar Modal */}
       <Modal
         title={false}
         open={calendarModalVisible}
@@ -231,17 +225,14 @@ Referral Program Management
                 </p>
               ))}
             </div>
-            <button
-
-              className="w-full p-2 rounded-xl bg-[#0A1F44] "
-            >
+            <button className="w-full p-2 rounded-xl bg-[#0A1F44] ">
               Apply
             </button>
           </div>
         </div>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default Refferal
+export default Refferal;

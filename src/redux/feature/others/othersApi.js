@@ -36,6 +36,13 @@ const othersApi = baseApi.injectEndpoints({
         params: { page, limit },
       }),
     }),
+    getRefferal: builder.query({
+      query: ({ limit, page }) => ({
+        url: "/admin/referral-program",
+        method: "GET",
+        params: { page, limit },
+      }),
+    }),
     createCategory: builder.mutation({
       query: (formData) => ({
         url: "/admin/categories",
@@ -60,5 +67,6 @@ export const {
   useCreateCategoryMutation,
   usePaymentTrackingQuery,
   useGetSuspentionsQuery,
-  useSuspenseStatusChangeMutation
+  useSuspenseStatusChangeMutation,
+  useGetRefferalQuery
 } = othersApi;

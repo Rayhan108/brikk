@@ -51,6 +51,7 @@ console.log("all payments--------->",transactions);
       title: "Date",
       dataIndex: "createdAt",
       key: "Date",
+         render: (text) => new Date(text).toLocaleDateString(),
     },
     {
       title: "Package",
