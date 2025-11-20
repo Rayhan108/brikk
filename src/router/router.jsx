@@ -20,6 +20,7 @@ import Otp from "../pages/Otp/Otp";
 import ForgotPass from "../pages/ForgotPass/ForgotPass";
 import SetPass from "../pages/SetPass/SetPass";
 import KnowledgeHub from "../pages/KnowledgeHub/KnowledgeHub";
+import PrivetRoutes from "./PrivetRoute";
 
 
 
@@ -48,8 +49,8 @@ const router = createBrowserRouter([
   },
   {
     path: "/",
-    // element: <PrivetRoutes><Main></Main></PrivetRoutes>,
-    element:<Main></Main>,
+    element: <PrivetRoutes><Main></Main></PrivetRoutes>,
+    // element:<Main></Main>,
     // errorElement: <ErrorPage></ErrorPage>,
     children: [
       {

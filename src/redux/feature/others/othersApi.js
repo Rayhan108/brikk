@@ -57,6 +57,48 @@ const othersApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    createAndUpdateAbout: builder.mutation({
+      query: (data) => ({
+        url:`/admin/content/about-us`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    createAndUpdateTerms: builder.mutation({
+      query: (data) => ({
+        url:`/admin/content/terms-and-conditions`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    createAndUpdatePrivacy: builder.mutation({
+      query: (data) => ({
+        url:`/admin/content/privacy-policy`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    getTerms: builder.query({
+      query: () => ({
+        url:`/admin/content/terms-and-conditions`,
+        method: "GET",
+        // body: data,
+      }),
+    }),
+    getPrivacy: builder.query({
+      query: () => ({
+        url:`/admin/content/privacy-policy`,
+        method: "GET",
+        // body: data,
+      }),
+    }),
+    getAbout: builder.query({
+      query: () => ({
+        url:`/admin/content/about-us`,
+        method: "GET",
+        // body: data,
+      }),
+    }),
   }),
 });
 
@@ -68,5 +110,7 @@ export const {
   usePaymentTrackingQuery,
   useGetSuspentionsQuery,
   useSuspenseStatusChangeMutation,
-  useGetRefferalQuery
+  useGetRefferalQuery,
+  useCreateAndUpdateAboutMutation,
+  useCreateAndUpdatePrivacyMutation,useCreateAndUpdateTermsMutation,useGetPrivacyQuery,useGetAboutQuery,useGetTermsQuery
 } = othersApi;
