@@ -9,6 +9,20 @@ const userManagementApi = baseApi.injectEndpoints({
         params: { page,limit },
       }),
     }),
+    getAllOwnersProfile: builder.query({
+      query: ({page,limit}) => ({
+        url: "/admin/owners/profile-status",
+        method: "GET",
+        params: { page,limit },
+      }),
+    }),
+    getAllProvidersProfile: builder.query({
+      query: ({page,limit}) => ({
+        url: "/admin/providers/profile-status",
+        method: "GET",
+        params: { page,limit },
+      }),
+    }),
     getAllProviders: builder.query({
       query: ({page,limit}) => ({
         url: "/admin/providers",
@@ -60,5 +74,7 @@ export const {
   useSearchUsersQuery,
   useBlockUsersMutation,
   useGetAllBookingQuery,
-  useGetAllTransectionsQuery
+  useGetAllTransectionsQuery,
+  useGetAllOwnersProfileQuery,
+  useGetAllProvidersProfileQuery
 } = userManagementApi;
