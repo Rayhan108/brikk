@@ -21,6 +21,7 @@ import ForgotPass from "../pages/ForgotPass/ForgotPass";
 import SetPass from "../pages/SetPass/SetPass";
 import KnowledgeHub from "../pages/KnowledgeHub/KnowledgeHub";
 import PrivetRoutes from "./PrivetRoute";
+import Affiliate from "../pages/Affiliate/Affiliate";
 
 
 
@@ -119,7 +120,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/setting/affiliate",
-        element: <Terms/>,
+        element: <Affiliate/>,
       },
      
     ],

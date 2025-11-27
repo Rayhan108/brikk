@@ -3,7 +3,7 @@ import JoditEditor from "jodit-react";
 import { useCreateAndUpdateAffiliateMutation, useGetAffiliateQuery,  } from "../../redux/feature/others/othersApi";
 import toast from "react-hot-toast"; // Importing toast for notifications
 
-const Terms = () => {
+const Affiliate = () => {
   const [createTerms] = useCreateAndUpdateAffiliateMutation();
   const { data: terms,refetch} = useGetAffiliateQuery(undefined); // Fetch terms from the API
 console.log("terms---->",terms?.data?.text);
@@ -76,4 +76,4 @@ console.log("terms---->",terms?.data?.text);
   );
 };
 
-export default Terms;
+export default Affiliate;
