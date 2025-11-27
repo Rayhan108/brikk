@@ -7,13 +7,13 @@ export default defineConfig({
   
   // For development server
   server: {
-    host: "dashboard.brikky.net",  // Set the host to your desired domain
+    host: "dashboard.brikky.net",  
     port: 5173,
   },
 
   // For preview after build
   preview: {
-    host: "dashboard.brikky.net",  // Set the host to your desired domain
+    host: "dashboard.brikky.net",
     port: 4173,
     strictPort: false,
   },

@@ -2,7 +2,8 @@ import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react"
 
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: "http://172.252.13.3:8000/api",
+    // baseUrl: "http://172.252.13.3:8000/api",
+    baseUrl: "https://backend.brikky.net/api",
     // baseUrl: "https://brickk-backend.onrender.com/api",
     // baseUrl: "http://10.10.20.73:8000/api",
     // credentials: "include",
