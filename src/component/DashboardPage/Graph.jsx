@@ -78,7 +78,7 @@ export default function Graph({ownerOverview,setOwnerYear,setEarningYear,ownerYe
                     <span className="text-lg font-semibold text-gray-900">35.80%</span>
                   </div> */}
                 </div>
-                <select
+                {/* <select
                   value={earningYear}
                   onChange={(e) => setEarningYear(e.target.value)}
                   className="w-20 h-8 text-[#0F0B18] text-sm border border-gray-300 rounded-md"
@@ -86,7 +86,7 @@ export default function Graph({ownerOverview,setOwnerYear,setEarningYear,ownerYe
                          {years.map(year => (
                     <option key={year} value={year}>{year}</option>
                   ))}
-                </select>
+                </select> */}
               </div>
             </div>
             <div className="h-64">
