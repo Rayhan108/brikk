@@ -117,6 +117,10 @@ const router = createBrowserRouter([
         path: "/setting/terms",
         element: <Terms/>,
       },
+      {
+        path: "/setting/affiliate",
+        element: <Terms/>,
+      },
      
     ],
   },

@@ -71,6 +71,13 @@ const othersApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
+    createAndUpdateAffiliate: builder.mutation({
+      query: (data) => ({
+        url:`/admin/content/affiliation-program`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
     createAndUpdatePrivacy: builder.mutation({
       query: (data) => ({
         url:`/admin/content/privacy-policy`,
@@ -81,6 +88,13 @@ const othersApi = baseApi.injectEndpoints({
     getTerms: builder.query({
       query: () => ({
         url:`/admin/content/terms-and-conditions`,
+        method: "GET",
+        // body: data,
+      }),
+    }),
+    getAffiliate: builder.query({
+      query: () => ({
+        url:`/admin/content/affiliation-program`,
         method: "GET",
         // body: data,
       }),
@@ -112,5 +126,5 @@ export const {
   useSuspenseStatusChangeMutation,
   useGetRefferalQuery,
   useCreateAndUpdateAboutMutation,
-  useCreateAndUpdatePrivacyMutation,useCreateAndUpdateTermsMutation,useGetPrivacyQuery,useGetAboutQuery,useGetTermsQuery
+  useCreateAndUpdatePrivacyMutation,useCreateAndUpdateTermsMutation,useGetPrivacyQuery,useGetAboutQuery,useGetTermsQuery,useCreateAndUpdateAffiliateMutation,useGetAffiliateQuery
 } = othersApi;

@@ -39,7 +39,7 @@ console.log("setting dropdown--->",isSettingsOpen);
 const isSettingsActive = currentPath.startsWith("/setting");
   return (
     <div
-      className={`px-3 bg-[#ffffff]  h-[900px] font-title ${
+      className={`px-3 bg-[#ffffff]  h-[1000px] font-title ${
         isOpen ? "translate-x-0 top-0 left-0" : "-translate-x-full"
       } lg:translate-x-0`}
     >
@@ -222,6 +222,14 @@ const isSettingsActive = currentPath.startsWith("/setting");
               >
                 <MdOutlinePrivacyTip className={`w-5 h-5 ${isActive("/setting/privacy") ? 'text-white' : 'text-[#0F0B18]'}`}  />
                 <p className="text-lg">Privacy Policy</p>
+              </li>
+            </Link>
+            <Link to="/setting/affiliate" className="">
+              <li
+                className={`py-2 flex items-center gap-2 transition-all duration-300 ease-in-out ${isActive("/setting/privacy") ? "pl-3 pr-5 py-[12px] rounded-2xl bg-[#1B2D51] text-[#ffffff]" : "text-[#0F0B18]"}`}
+              >
+                <MdOutlinePrivacyTip className={`w-5 h-5 ${isActive("/setting/affiliate") ? 'text-white' : 'text-[#0F0B18]'}`}  />
+                <p className="text-lg">Affiliate Condition</p>
               </li>
             </Link>
           </ul>
