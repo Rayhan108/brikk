@@ -20,6 +20,7 @@ function DashboardPage() {
   console.log("stats------->", stats);
   const summary = stats?.data?.summary;
   const ownerOverview = stats?.data?.ownerOverview;
+  const earningsOverview = stats?.data?.earningsOverview;
 
   const years = Array.from(
     { length: currentYear - startYear + 1 },
@@ -41,6 +42,7 @@ function DashboardPage() {
         setEarningYear={setEarningYear}  
         earningYear={earningYear}
         ownerYear={ownerYear}
+        earningsOverview={earningsOverview}
       />
       <RecentJoin />
     </div>

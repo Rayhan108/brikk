@@ -5,27 +5,17 @@ import { AreaChart, Area, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } fro
 
 
 // Sample data for Earning Overview (Bar Chart)
-const earningData = [
-  { month: "Jan", value: 50 },
-  { month: "Feb", value: 45 },
-  { month: "Mar", value: 45 },
-  { month: "Apr", value: 30 },
-  { month: "May", value: 35 },
-  { month: "Jun", value: 40 },
-  { month: "Jul", value: 45 },
-  { month: "Aug", value: 50 },
-  { month: "Sep", value: 60 },
-  { month: "Oct", value: 65 },
-  { month: "Nov", value: 78 },
-  { month: "Dec", value: 85 },
-]
 
-export default function Graph({ownerOverview,setOwnerYear,setEarningYear,ownerYear,earningYear}) {
-  console.log("ownerOverview--------->",ownerOverview?.monthlyOverview);
+export default function Graph({ownerOverview,setOwnerYear,setEarningYear,ownerYear,earningYear,earningsOverview}) {
+  // console.log("ownerOverview--------->",ownerOverview?.monthlyOverview);
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: currentYear - 2000 + 1 }, (_, index) => 2000 + index);
   // Directly mapping over ownerOverview?.monthlyOverview to get the data
   const ownerData = ownerOverview?.monthlyOverview?.map((monthData) => ({
+    month: monthData.month.slice(0, 3), // First 3 letters of the month (e.g., Jan, Feb)
+    value: monthData.growthPercentage, // Use the growthPercentage value
+  })) || [];
+  const earningData = earningsOverview?.monthlyOverview?.map((monthData) => ({
     month: monthData.month.slice(0, 3), // First 3 letters of the month (e.g., Jan, Feb)
     value: monthData.growthPercentage, // Use the growthPercentage value
   })) || [];
@@ -83,10 +73,10 @@ export default function Graph({ownerOverview,setOwnerYear,setEarningYear,ownerYe
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="text-lg font-semibold text-gray-900">Earning Overview</h2>
-                  <div className="flex items-center gap-4 mt-2">
+                  {/* <div className="flex items-center gap-4 mt-2">
                     <span className="text-sm text-gray-600">Monthly Growth</span>
                     <span className="text-lg font-semibold text-gray-900">35.80%</span>
-                  </div>
+                  </div> */}
                 </div>
                 <select
                   value={earningYear}

@@ -37,7 +37,7 @@ const Stats = ({summary}) => {
                </div>
               <div>
                   <p className="font-title text-[#0F0B18] text-xl pb-2 ">Total Earnings</p>
-                <p className="font-title  text-xl text-[#0F0B18]  pt-2">$2333</p>
+                <p className="font-title  text-xl text-[#0F0B18]  pt-2">${summary?.totalAdminEarnings}</p>
               </div>
             </div>
     
