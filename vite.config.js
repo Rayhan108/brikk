@@ -6,15 +6,28 @@ export default defineConfig({
   plugins: [react()],
   
   // For development server
-  server: {
-    host: "dashboard.brikky.net",  
-    port: 5173,
-  },
+  // server: {
+  //   host: "dashboard.brikky.net",  
+  //   port: 5173,
+  // },
 
   // For preview after build
-  preview: {
-    host: "dashboard.brikky.net",
-    port: 4173,
-    strictPort: false,
-  },
+  // preview: {
+  //   host: "dashboard.brikky.net",
+  //   port: 4173,
+  //   strictPort: false,
+  // },
+
+
+
+  server: {
+  host: "localhost",  // or "0.0.0.0" if you need LAN access
+  port: 5173,
+},
+preview: {
+  host: "localhost",
+  port: 4173,
+  strictPort: false,
+},
+
 });

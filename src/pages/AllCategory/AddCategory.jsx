@@ -4,7 +4,7 @@ import toast from "react-hot-toast";
 
 const AddCategory = ({ refetch,setModalOpen }) => {
   const [createCat] = useCreateCategoryMutation();
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
   const onSubmit = async (data) => {
     // Create FormData object to send the data
@@ -24,7 +24,8 @@ const AddCategory = ({ refetch,setModalOpen }) => {
 
       if (res?.success) {
         toast.success(res?.message);  // Show success notification
-        
+        setModalOpen(false)
+         reset()
         refetch();  // Refetch categories to update the UI
       } else {
         toast.error(res?.message);  // Show error if response is unsuccessful

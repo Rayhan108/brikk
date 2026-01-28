@@ -239,6 +239,7 @@ if(res?.data?.success){
                 {Object.keys(singleUser?.data)?.map((key) => {
                   if (key === "_id") return null;
                   if (key === "NIDFront") return null;
+                    if (key === "profilePicture") return null;
                   if (key === "createdAt") return null;
                   return (
                     <div key={key}>
