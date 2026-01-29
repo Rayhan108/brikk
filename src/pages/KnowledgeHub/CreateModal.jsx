@@ -4,45 +4,44 @@ import { useRef, useState } from 'react';
 import { useCreateKnowledgeMutation } from '../../redux/feature/knowledgeHub/knowledgeApi';
 import toast from 'react-hot-toast';
 
-const CreateModal = ({refetch,setIsCreateModalOpen}) => {
-  const [createKnowledge] = useCreateKnowledgeMutation(); // Hook for the mutation
+const CreateModal = ({ refetch, setIsCreateModalOpen }) => {
+  const [createKnowledge] = useCreateKnowledgeMutation();
   const editor = useRef(null);
   const [content, setContent] = useState("");
-  const [title, setTitle] = useState(""); // State to store the title
+  const [title, setTitle] = useState("");
 
   const config = {
     readonly: false,
     placeholder: "Start typing...",
-    height: 600,
+    height: 400, 
     iframe: false,
   };
 
-  // Handle content changes
   const handleSave = async () => {
-    if (!title || !content) {
+    if (!title || !content || content === "<p><br></p>") { 
       toast.warning("Title and Content are required.");
       return;
     }
 
     const data = {
       title,
-      description: content, // Using the title and content from the state
+      description: content,
     };
 
     try {
-      const response = await createKnowledge(data).unwrap(); // Call the mutation and unwrap the result   
+      const response = await createKnowledge(data).unwrap();
       if (response?.success) {
         toast.success("Knowledge Hub created successfully!");
-        refetch()
-        setIsCreateModalOpen(false)
-      } else {
-        toast.error("Failed to create Knowledge Hub. Please try again.");
-        setIsCreateModalOpen(false)
+        
+     
+        setTitle("");
+        setContent("");
+        
+        refetch();
+        setIsCreateModalOpen(false);
       }
     } catch (error) {
-      // console.error("Error creating knowledge hub:", error);
-      toast.error(error?.data?.message);
-      setIsCreateModalOpen(false)
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
@@ -52,8 +51,8 @@ const CreateModal = ({refetch,setIsCreateModalOpen}) => {
 
       <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
       <Input
-        // value={title}
-        onChange={(e) => setTitle(e.target.value)} // Update title state
+        value={title} 
+        onChange={(e) => setTitle(e.target.value)}
         className="h-12 mb-6"
         placeholder="Enter the title"
       />
@@ -62,10 +61,10 @@ const CreateModal = ({refetch,setIsCreateModalOpen}) => {
       <div className='mb-3'>
         <JoditEditor
           ref={editor}
-          // value={content}
+          value={content} 
           config={config}
           tabIndex={1}
-          onBlur={(newContent) => setContent(newContent)} // Update content state on blur
+          onBlur={(newContent) => setContent(newContent)} 
           onChange={() => {}}
         />
       </div>
@@ -73,7 +72,7 @@ const CreateModal = ({refetch,setIsCreateModalOpen}) => {
       <Button
         type="primary"
         block
-        onClick={handleSave} // Trigger the save function
+        onClick={handleSave}
         className="h-12 bg-blue-900 text-white hover:bg-blue-800"
       >
         Save
