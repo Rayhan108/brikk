@@ -52,7 +52,7 @@ const CreateModal = ({refetch,setIsCreateModalOpen}) => {
 
       <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
       <Input
-        value={title}
+        // value={title}
         onChange={(e) => setTitle(e.target.value)} // Update title state
         className="h-12 mb-6"
         placeholder="Enter the title"
@@ -62,7 +62,7 @@ const CreateModal = ({refetch,setIsCreateModalOpen}) => {
       <div className='mb-3'>
         <JoditEditor
           ref={editor}
-          value={content}
+          // value={content}
           config={config}
           tabIndex={1}
           onBlur={(newContent) => setContent(newContent)} // Update content state on blur
