@@ -22,6 +22,22 @@ const othersApi = baseApi.injectEndpoints({
         params: { page, limit },
       }),
     }),
+    deleteCategory: builder.mutation({
+      query: (id) => ({
+        url: `/admin/categories/${id}`,
+        method: "DELETE",
+     
+      }),
+    
+    }),
+    editCategory: builder.mutation({
+      query: ({id, data}) => ({
+           url: `/admin/categories/${id}`,
+        method: "PUT",
+        body: data
+      }),
+    
+    }),
     paymentTracking: builder.query({
       query: ({ limit, page }) => ({
         url: "/transactions/payment-tracking",
@@ -126,5 +142,5 @@ export const {
   useSuspenseStatusChangeMutation,
   useGetRefferalQuery,
   useCreateAndUpdateAboutMutation,
-  useCreateAndUpdatePrivacyMutation,useCreateAndUpdateTermsMutation,useGetPrivacyQuery,useGetAboutQuery,useGetTermsQuery,useCreateAndUpdateAffiliateMutation,useGetAffiliateQuery
+  useCreateAndUpdatePrivacyMutation,useCreateAndUpdateTermsMutation,useGetPrivacyQuery,useGetAboutQuery,useGetTermsQuery,useCreateAndUpdateAffiliateMutation,useGetAffiliateQuery,useDeleteCategoryMutation,useEditCategoryMutation
 } = othersApi;

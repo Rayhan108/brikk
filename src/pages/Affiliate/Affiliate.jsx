@@ -37,7 +37,7 @@ console.log("terms---->",terms?.data?.text);
     try {
       // Attempt to save the content to the server via the API
       const response = await createTerms({ text: content }).unwrap();
-      toast.success("Terms & Conditions updated successfully!");
+      toast.success("Affiliate Conditions updated successfully!");
       refetch()
     } catch (error) {
       toast.error(error?.data?.message);
